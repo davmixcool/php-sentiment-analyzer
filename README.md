@@ -43,7 +43,7 @@ print_r($result);
 ```
 ##Output
 ```
-['neg'=> 0.0, 'neu'=> 0.254, 'pos'=> 0.746, 'compound'=> 0.8316]
+['neg'=> 0.0, 'neu'=> 0.337, 'pos'=> 0.663, 'compound'=> 0.7096]
 ```
 
 ### License
