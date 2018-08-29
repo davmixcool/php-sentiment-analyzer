@@ -18,7 +18,7 @@ class Analyzer{
 	
     function __construct($lexicon_file="Lexicons/vader_sentiment_lexicon.txt"){
 		//Not sure about this as it forces lexicon file to be in the same directory as executing script
-        $this->lexicon_file = realpath(dirname(__FILE__)) . "/" . $lexicon_file;
+        $this->lexicon_file = __DIR__ . DIRECTORY_SEPARATOR . $lexicon_file;
         $this->lexicon = $this->make_lex_dict();
 	}
 	
