@@ -1,0 +1,35 @@
+# --- output for the above example code ---
+VADER is smart, handsome, and funny.
+    {'neg': 0.0, 'neu': 0.254, 'pos': 0.746, 'compound': 0.8316}
+VADER is smart, handsome, and funny!
+    {'neg': 0.0, 'neu': 0.248, 'pos': 0.752, 'compound': 0.8439}
+VADER is very smart, handsome, and funny.
+    {'neg': 0.0, 'neu': 0.299, 'pos': 0.701, 'compound': 0.8545}
+VADER is VERY SMART, handsome, and FUNNY.
+    {'neg': 0.0, 'neu': 0.246, 'pos': 0.754, 'compound': 0.9227}
+VADER is VERY SMART, handsome, and FUNNY!!!
+    {'neg': 0.0, 'neu': 0.233, 'pos': 0.767, 'compound': 0.9342}
+VADER is VERY SMART, really handsome, and INCREDIBLY FUNNY!!!
+    {'neg': 0.0, 'neu': 0.294, 'pos': 0.706, 'compound': 0.9469}
+The book was good.
+    {'neg': 0.0, 'neu': 0.508, 'pos': 0.492, 'compound': 0.4404}
+The book was kind of good.
+    {'neg': 0.0, 'neu': 0.657, 'pos': 0.343, 'compound': 0.3832}
+The plot was good, but the characters are uncompelling and the dialog is not great.
+    {'neg': 0.327, 'neu': 0.579, 'pos': 0.094, 'compound': -0.7042}
+A really bad, horrible book.
+    {'neg': 0.791, 'neu': 0.209, 'pos': 0.0, 'compound': -0.8211}
+At least it isn't a horrible book.
+    {'neg': 0.0, 'neu': 0.637, 'pos': 0.363, 'compound': 0.431}
+:) and :D
+    {'neg': 0.0, 'neu': 0.124, 'pos': 0.876, 'compound': 0.7925}
+
+    {'neg': 0.0, 'neu': 0.0, 'pos': 0.0, 'compound': 0.0}
+Today sux
+    {'neg': 0.714, 'neu': 0.286, 'pos': 0.0, 'compound': -0.3612}
+Today sux!
+    {'neg': 0.736, 'neu': 0.264, 'pos': 0.0, 'compound': -0.4199}
+Today SUX!
+    {'neg': 0.779, 'neu': 0.221, 'pos': 0.0, 'compound': -0.5461}
+Today kinda sux! But I'll get by, lol
+    {'neg': 0.195, 'neu': 0.531, 'pos': 0.274, 'compound': 0.2228}
