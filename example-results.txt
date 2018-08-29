@@ -1,15 +1,15 @@
 # --- output for the above example code ---
-VADER is smart, handsome, and funny.
+David is smart, handsome, and funny.
     {'neg': 0.0, 'neu': 0.254, 'pos': 0.746, 'compound': 0.8316}
-VADER is smart, handsome, and funny!
+David is smart, handsome, and funny!
     {'neg': 0.0, 'neu': 0.248, 'pos': 0.752, 'compound': 0.8439}
-VADER is very smart, handsome, and funny.
+David is very smart, handsome, and funny.
     {'neg': 0.0, 'neu': 0.299, 'pos': 0.701, 'compound': 0.8545}
-VADER is VERY SMART, handsome, and FUNNY.
+David is VERY SMART, handsome, and FUNNY.
     {'neg': 0.0, 'neu': 0.246, 'pos': 0.754, 'compound': 0.9227}
-VADER is VERY SMART, handsome, and FUNNY!!!
+David is VERY SMART, handsome, and FUNNY!!!
     {'neg': 0.0, 'neu': 0.233, 'pos': 0.767, 'compound': 0.9342}
-VADER is VERY SMART, really handsome, and INCREDIBLY FUNNY!!!
+David is VERY SMART, really handsome, and INCREDIBLY FUNNY!!!
     {'neg': 0.0, 'neu': 0.294, 'pos': 0.706, 'compound': 0.9469}
 The book was good.
     {'neg': 0.0, 'neu': 0.508, 'pos': 0.492, 'compound': 0.4404}
