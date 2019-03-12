@@ -60,7 +60,7 @@ class Config
         Normalize the score to be between -1 and 1 using an alpha that
         approximates the max expected value
     */
-    public function normalize($score, $alpha = 15)
+    public static function normalize($score, $alpha = 15)
     {
         $norm_score = $score/sqrt(($score*$score) + $alpha);
         return $norm_score;
