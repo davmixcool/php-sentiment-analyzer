@@ -34,7 +34,7 @@ class Config
     //http://en.wiktionary.org/wiki/Category:English_degree_adverbs
 
     const BOOSTER_DICT = ["absolutely"=> self::B_INCR, "amazingly"=> self::B_INCR, "awfully"=> self::B_INCR, "completely"=> self::B_INCR, "considerably"=> self::B_INCR,
-     "decidedly"=> self::B_INCR, "deeply"=> self::B_INCR, "effing"=> self::B_INCR, "enormously"=> self::B_INCR,
+     "decidedly"=> self::B_INCR, "deeply"=> self::B_INCR, "effing"=> self::B_INCR,"enormous"=> self::B_INCR, "enormously"=> self::B_INCR,
      "entirely"=> self::B_INCR, "especially"=> self::B_INCR, "exceptionally"=> self::B_INCR, "extremely"=> self::B_INCR,
      "fabulously"=> self::B_INCR, "flipping"=> self::B_INCR, "flippin"=> self::B_INCR,
      "fricking"=> self::B_INCR, "frickin"=> self::B_INCR, "frigging"=> self::B_INCR, "friggin"=> self::B_INCR, "fully"=> self::B_INCR, "fucking"=> self::B_INCR,
@@ -42,12 +42,12 @@ class Config
      "intensely"=> self::B_INCR, "majorly"=> self::B_INCR, "more"=> self::B_INCR, "most"=> self::B_INCR, "particularly"=> self::B_INCR,
      "purely"=> self::B_INCR, "quite"=> self::B_INCR, "really"=> self::B_INCR, "remarkably"=> self::B_INCR,
      "so"=> self::B_INCR, "substantially"=> self::B_INCR,
-     "thoroughly"=> self::B_INCR, "totally"=> self::B_INCR, "tremendously"=> self::B_INCR,
+     "thoroughly"=> self::B_INCR, "totally"=> self::B_INCR, "tremendous"=> self::B_INCR, "tremendously"=> self::B_INCR,
      "uber"=> self::B_INCR, "unbelievably"=> self::B_INCR, "unusually"=> self::B_INCR, "utterly"=> self::B_INCR,
      "very"=> self::B_INCR,
      "almost"=> self::B_DECR, "barely"=> self::B_DECR, "hardly"=> self::B_DECR, "just enough"=> self::B_DECR,
      "kind of"=> self::B_DECR, "kinda"=> self::B_DECR, "kindof"=> self::B_DECR, "kind-of"=> self::B_DECR,
-     "less"=> self::B_DECR, "little"=> self::B_DECR, "marginally"=> self::B_DECR, "occasionally"=> self::B_DECR, "partly"=> self::B_DECR,
+     "less"=> self::B_DECR, "little"=> self::B_DECR, "marginally"=> self::B_DECR, "occasional"=> self::B_DECR, "occasionally"=> self::B_DECR, "partly"=> self::B_DECR,
      "scarcely"=> self::B_DECR, "slightly"=> self::B_DECR, "somewhat"=> self::B_DECR,
      "sort of"=> self::B_DECR, "sorta"=> self::B_DECR, "sortof"=> self::B_DECR, "sort-of"=> self::B_DECR];
 
