@@ -8,8 +8,9 @@ PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that 
 
 ## Features
 
-* Emoji
 * Text
+* Emoticon
+* Emoji
 
 ## Requirements
 
@@ -50,13 +51,15 @@ print_r($output_emoji);
 print_r($output_text_with_emoji);
 
 ```
-##Outputs
+
+###Outputs
+
 ```
-	David is smart, handsome, and funny. ----------------------------- ['neg'=> 0.0, 'neu'=> 0.337, 'pos'=> 0.663, 'compound'=> 0.7096]
+David is smart, handsome, and funny. ---------------- ['neg'=> 0.0, 'neu'=> 0.337, 'pos'=> 0.663, 'compound'=> 0.7096]
 
-	😁 ----------------------------- ['neg' => 0, 'neu' => 0.5, 'pos' => 0.5, 'compound' => 0.4588]
+😁 ------------------- ['neg' => 0, 'neu' => 0.5, 'pos' => 0.5, 'compound' => 0.4588]
 
-	Aproko doctor made me 🤣 ------------------------ ['neg' => 0, 'neu' => 1, 'pos' => 0, 'compound' => 0]
+Aproko doctor made me 🤣 ------------- ['neg' => 0, 'neu' => 1, 'pos' => 0, 'compound' => 0]
 
 ```
 
