@@ -16,11 +16,15 @@ class Analyzer
 
     private $current_sentitext = null;
 
-    public function __construct($lexicon_file = "Lexicons/vader_sentiment_lexicon.txt")
+    public function __construct($lexicon_file = "Lexicons/vader_sentiment_lexicon.txt",$emoji_lexicon='Lexicons/emoji_utf8_lexicon.txt')
     {
         //Not sure about this as it forces lexicon file to be in the same directory as executing script
         $this->lexicon_file = __DIR__ . DIRECTORY_SEPARATOR . $lexicon_file;
         $this->lexicon = $this->make_lex_dict();
+
+        $this->emoji_lexicon = __DIR__ . DIRECTORY_SEPARATOR .$emoji_lexicon;
+
+        $this->emojis = $this->make_emoji_dict();
     }
 
     /*
@@ -60,6 +64,23 @@ class Analyzer
         }
 
         return $lex_dict;
+    }
+
+
+    public function make_emoji_dict() {
+        $emoji_dict = [];
+        $fp = fopen($this->emoji_lexicon, "r");
+        if (!$fp) {
+            die("Cannot load emoji lexicon file");
+        }
+
+        while (($line = fgets($fp, 4096)) !== false) {
+            list($emoji, $description) = explode("\t", trim($line));
+            //.strip().split('\t')[0:2]
+            $emoji_dict[$emoji] = $description;
+            //lex_dict[word] = float(measure)
+        }
+        return $emoji_dict;
     }
 
     private function IsKindOf($firstWord, $secondWord)
@@ -137,6 +158,26 @@ class Analyzer
     */
     public function getSentiment($text)
     {
+
+        $text_no_emoji = '';
+        $prev_space = true;
+        
+        foreach($this->str_split_unicode($text) as $unichr ) {     
+            if (array_key_exists($unichr, $this->emojis)) {
+                $description = $this->emojis[$unichr];
+                if (!($prev_space)) {
+                    $text_no_emoji .= ' ';
+                }
+                $text_no_emoji .= $description;
+                $prev_space = false;
+            }
+            else {
+                $text_no_emoji .= $unichr;
+                $prev_space = ($unichr == ' ');
+            }
+        }
+        $text = trim($text_no_emoji);
+
         $this->current_sentitext = new SentiText($text);
 
         $sentiments = [];
@@ -169,6 +210,20 @@ class Analyzer
 
         return $this->score_valence($sentiments, $text);
     }
+
+
+    private function str_split_unicode($str, $l = 0) {
+        if ($l > 0) {
+            $ret = array();
+            $len = mb_strlen($str, "UTF-8");
+            for ($i = 0; $i < $len; $i += $l) {
+                $ret[] = mb_substr($str, $i, $l, "UTF-8");
+            }
+            return $ret;
+        }
+        return preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY);
+    }
+
 
     private function applyValenceCapsBoost($targetWord, $valence)
     {
@@ -370,6 +425,24 @@ class Analyzer
         }
 
         return $valance;
+    }
+
+    public function _sentiment_laden_idioms_check($valence, $senti_text_lower){
+        # Future Work
+        # check for sentiment laden idioms that don't contain a lexicon word
+        $idioms_valences = [];
+        foreach (Config::SENTIMENT_LADEN_IDIOMS as $idiom) {
+             if(in_array($idiom, $senti_text_lower)){
+                //print($idiom, $senti_text_lower)
+                $valence = Config::SENTIMENT_LADEN_IDIOMS[$idiom];
+                $idioms_valences[] = $valence;
+            }
+        }
+
+        if ((strlen($idioms_valences) > 0)) {
+            $valence = ( array_sum( explode( ',', $idioms_valences ) ) / floatval(strlen($idioms_valences)));
+        }
+        return $valence;
     }
 
     public function _punctuation_emphasis($sum_s, $text)

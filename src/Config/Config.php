@@ -51,6 +51,14 @@ class Config
      "scarcely"=> self::B_DECR, "slightly"=> self::B_DECR, "somewhat"=> self::B_DECR,
      "sort of"=> self::B_DECR, "sorta"=> self::B_DECR, "sortof"=> self::B_DECR, "sort-of"=> self::B_DECR];
 
+
+     # check for sentiment laden idioms that do not contain lexicon words (future work, not yet implemented)
+    const SENTIMENT_LADEN_IDIOMS = ["cut the mustard"=> 2, "hand to mouth"=> -2,
+                          "back handed"=> -2, "blow smoke"=> -2, "blowing smoke"=> -2,
+                          "upper hand"=> 1, "break a leg"=> 2,
+                          "cooking with gas"=> 2, "in the black"=> 2, "in the red"=> -2,
+                          "on the ball"=> 2, "under the weather"=> -2];
+
     // check for special case idioms using a sentiment-laden keyword known to SAGE
     const SPECIAL_CASE_IDIOMS = ["the shit"=> 3, "the bomb"=> 3, "bad ass"=> 1.5, "bus stop"=> 0.0, "yeah right"=> -2, "cut the mustard"=> 2, "kiss of death"=> -1.5, "hand to mouth"=> -2, "beating heart"=> 3.1,"broken heart"=> -2.9,  "to die for"=> 3];
     ##Static methods##
