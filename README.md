@@ -6,6 +6,12 @@ PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that 
 [![GitHub issues](https://img.shields.io/github/issues/davmixcool/php-sentiment-analyzer.svg)](https://github.com/davmixcool/php-sentiment-analyzer/issues)
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/davmixcool/php-sentiment-analyzer.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fdavmixcool%2Fphp-sentiment-analyzer)
 
+## Features
+
+* Emoji
+* Dublin Core
+* Facebook OpenGraph
+* Twitter Card
 
 ## Requirements
 
@@ -33,17 +39,27 @@ composer require davmixcool/php-sentiment-analyzer
 ```php
 
 Use Sentiment\Analyzer;
-
-$sentence = "David is smart, handsome, and funny.";
 $analyzer = new Analyzer(); 
-$result = $analyzer->getSentiment($sentence);
 
-print_r($result);
+$output_text = $analyzer->getSentiment("David is smart, handsome, and funny.");
+
+$output_emoji = $analyzer->getSentiment("😁");
+
+$output_text_with_emoji = $analyzer->getSentiment("Aproko doctor made me 🤣.");
+
+print_r($output_text);
+print_r($output_emoji);
+print_r($output_text_with_emoji);
 
 ```
-##Output
+##Outputs
 ```
-['neg'=> 0.0, 'neu'=> 0.337, 'pos'=> 0.663, 'compound'=> 0.7096]
+	David is smart, handsome, and funny. ----------------------------- ['neg'=> 0.0, 'neu'=> 0.337, 'pos'=> 0.663, 'compound'=> 0.7096]
+
+	😁 									 ----------------------------- ['neg' => 0, 'neu' => 0.5, 'pos' => 0.5, 'compound' => 0.4588]
+	
+	Aproko doctor made me 🤣             ------------------------ ['neg' => 0, 'neu' => 1, 'pos' => 0, 'compound' => 0]
+
 ```
 
 ### License
