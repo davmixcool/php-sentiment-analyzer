@@ -52,7 +52,7 @@ print_r($output_text_with_emoji);
 
 ```
 
-###Outputs
+### Outputs
 
 ```
 David is smart, handsome, and funny. ---------------- ['neg'=> 0.0, 'neu'=> 0.337, 'pos'=> 0.663, 'compound'=> 0.7096]
