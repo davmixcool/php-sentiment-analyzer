@@ -40,7 +40,7 @@ class Config
      "fricking"=> self::B_INCR, "frickin"=> self::B_INCR, "frigging"=> self::B_INCR, "friggin"=> self::B_INCR, "fully"=> self::B_INCR, "fucking"=> self::B_INCR,
      "greatly"=> self::B_INCR, "hella"=> self::B_INCR, "highly"=> self::B_INCR, "hugely"=> self::B_INCR, "incredibly"=> self::B_INCR,
      "intensely"=> self::B_INCR, "majorly"=> self::B_INCR, "more"=> self::B_INCR, "most"=> self::B_INCR, "particularly"=> self::B_INCR,
-     "purely"=> self::B_INCR, "quite"=> self::B_INCR, "really"=> self::B_INCR, "remarkably"=> self::B_INCR,
+     "purely"=> self::B_INCR, "quite"=> self::B_INCR, "seemingly" => self::B_INCR, "really"=> self::B_INCR, "remarkably"=> self::B_INCR,
      "so"=> self::B_INCR, "substantially"=> self::B_INCR,
      "thoroughly"=> self::B_INCR, "totally"=> self::B_INCR, "tremendous"=> self::B_INCR, "tremendously"=> self::B_INCR,
      "uber"=> self::B_INCR, "unbelievably"=> self::B_INCR, "unusually"=> self::B_INCR, "utterly"=> self::B_INCR,

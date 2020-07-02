@@ -33,7 +33,7 @@ Run the following to include this via Composer
 composer require davmixcool/php-sentiment-analyzer
 ```
 
-### Usage
+### Simple Usage
 
 ```php
 
@@ -52,16 +52,86 @@ print_r($output_text_with_emoji);
 
 ```
 
-### Outputs
+### Simple Outputs
 
 ```
 David is smart, handsome, and funny. ---------------- ['neg'=> 0.0, 'neu'=> 0.337, 'pos'=> 0.663, 'compound'=> 0.7096]
 
 😁 ------------------- ['neg' => 0, 'neu' => 0.5, 'pos' => 0.5, 'compound' => 0.4588]
 
-Aproko doctor made me 🤣 ------------- ['neg' => 0, 'neu' => 1, 'pos' => 0, 'compound' => 0]
+Aproko doctor made me 🤣 ------------- ['neg' => 0, 'neu' => 0.714, 'pos' =>  0.286, 'compound' => 0.4939]
 
 ```
+
+
+
+### Advance Usage
+
+You can now dynamically update the VADER (Valence) lexicon on the fly for words that are not in the dictionary. See Example below:
+
+
+```php
+
+
+Use Sentiment\Analyzer;
+
+$sentiment = new Sentiment\Analyzer();
+
+$strings = [
+	'Weather today is rubbish',
+	'This cake looks amazing',
+	'His skills are mediocre',
+	'He is very talented',
+	'She is seemingly very agressive',
+	'Marie was enthusiastic about the upcoming trip. Her brother was also passionate about her leaving - he would finally have the house for himself.',
+	'To be or not to be?',
+];
+
+//new words not in the dictionary
+$newWords = [
+	'rubbish'=> '-1.5',
+	'mediocre' => '-1.0',
+	'agressive' => '-0.5'
+];
+
+//Dynamically update the dictionary with the new words
+$sentiment->updateLexicon($newWords);
+
+//Print results
+foreach ($strings as $string) {
+	// calculations:
+	$scores = $sentiment->getSentiment($string);
+	// output:
+	echo "String: $string\n";
+	print_r(json_encode($scores));
+	echo "<br>";
+}
+
+
+```
+
+
+### Advance Outputs
+
+
+```
+
+Weather today is rubbish  ------------- {"neg":0.455,"neu":0.545,"pos":0,"compound":-0.3612} 
+
+This cake looks amazing  ------------- {"neg":0,"neu":0.441,"pos":0.559,"compound":0.5859}
+
+His skills are mediocre  ------------- {"neg":0.4,"neu":0.6,"pos":0,"compound":-0.25}
+
+He is very talented  ------------- {"neg":0,"neu":0.457,"pos":0.543,"compound":0.552}
+
+She is seemingly very agressive  ------------- {"neg":0.338,"neu":0.662,"pos":0,"compound":-0.2598}
+
+Marie was enthusiastic about the upcoming trip. Her brother was also passionate about her leaving - he would finally have the house for himself.  ------------- {"neg":0,"neu":0.761,"pos":0.239,"compound":0.765}
+
+String: To be or not to be?  ------------- {"neg":0,"neu":1,"pos":0,"compound":0}
+
+```
+
 
 ### License
 
