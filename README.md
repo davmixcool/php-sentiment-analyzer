@@ -9,9 +9,7 @@ PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that 
 ## Features
 
 * Emoji
-* Dublin Core
-* Facebook OpenGraph
-* Twitter Card
+* Text
 
 ## Requirements
 
@@ -57,7 +55,7 @@ print_r($output_text_with_emoji);
 	David is smart, handsome, and funny. ----------------------------- ['neg'=> 0.0, 'neu'=> 0.337, 'pos'=> 0.663, 'compound'=> 0.7096]
 
 	😁 									 ----------------------------- ['neg' => 0, 'neu' => 0.5, 'pos' => 0.5, 'compound' => 0.4588]
-	
+
 	Aproko doctor made me 🤣             ------------------------ ['neg' => 0, 'neu' => 1, 'pos' => 0, 'compound' => 0]
 
 ```
