@@ -170,8 +170,8 @@ class Analyzer
 
         $text_no_emoji = '';
         $prev_space = true;
-        
-        foreach($this->str_split_unicode($text) as $unichr ) {     
+
+        foreach($this->str_split_unicode($text) as $unichr ) {
             if (array_key_exists($unichr, $this->emojis)) {
                 $description = $this->emojis[$unichr];
                 if (!($prev_space)) {
@@ -384,8 +384,9 @@ class Analyzer
         $sequences = [$onezero, $twoonezero, $twoone, $threetwoone, $threetwo];
 
         foreach ($sequences as $seq) {
-            if (array_key_exists(strtolower($seq), Config::SPECIAL_CASE_IDIOMS)) {
-                $valence = Config::SPECIAL_CASE_IDIOMS[$seq];
+            $key = strtolower($seq);
+            if (array_key_exists($key, Config::SPECIAL_CASE_IDIOMS)) {
+                $valence = Config::SPECIAL_CASE_IDIOMS[$key];
                 break;
             }
 
