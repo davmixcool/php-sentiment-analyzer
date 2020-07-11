@@ -8,15 +8,15 @@ namespace Sentiment\Procedures;
 
 class SentiText
 {
-    
+
     private $text = "";
     public $words_and_emoticons = null;
     public $is_cap_diff = null;
 
     const PUNC_LIST = [".", "!", "?", ",", ";", ":", "-", "'", "\"",
              "!!", "!!!", "??", "???", "?!?", "!?!", "?!?!", "!?!?"];
-    
-    
+
+
     function __construct($text)
     {
         //checking that is string
@@ -29,7 +29,7 @@ class SentiText
         // adjacent punctuation (keeps emoticons & contractions)
         $this->is_cap_diff = $this->allcap_differential($this->words_and_emoticons);
     }
-    
+
     /*
         Remove all punctation from a string
     */
@@ -38,16 +38,16 @@ class SentiText
         //$string = strtolower($string);
         return preg_replace("/[[:punct:]]+/", "", $string);
     }
-    
+
     function array_count_values_of($haystack, $needle)
     {
-        if (!in_array($needle, $haystack)) {
+        if (!in_array($needle, $haystack, true)) {
             return 0;
         }
         $counts = array_count_values($haystack);
         return $counts[$needle];
     }
-    
+
     /*
         Check whether just some words in the input are ALL CAPS
 
@@ -71,7 +71,7 @@ class SentiText
         }
         return $is_different;
     }
-    
+
     function _words_only()
     {
         $text_mod = $this->strip_punctuation($this->text);
@@ -86,9 +86,9 @@ class SentiText
 
     function _words_and_emoticons()
     {
-        
+
         $wes = preg_split('/\s+/', $this->text);
-        
+
         # get rid of residual empty items or single letter words
         $wes = array_filter($wes, function ($word) {
             return strlen($word) > 1;
@@ -96,16 +96,16 @@ class SentiText
         //Need to remap the indexes of the array
         $wes = array_values($wes);
         $words_only = $this->_words_only();
-        
+
         foreach ($words_only as $word) {
             foreach (self::PUNC_LIST as $punct) {
                 //replace all punct + word combinations with word
                 $pword = $punct .$word;
-            
-                
+
+
                 $x1 = $this->array_count_values_of($wes, $pword);
                 while ($x1 > 0) {
-                    $i = array_search($pword, $wes);
+                    $i = array_search($pword, $wes, true);
                     unset($wes[$i]);
                     array_splice($wes, $i, 0, $word);
                     $x1 = $this->array_count_values_of($wes, $pword);
@@ -114,7 +114,7 @@ class SentiText
                 $wordp = $word . $punct;
                 $x2 = $this->array_count_values_of($wes, $wordp);
                 while ($x2 > 0) {
-                    $i = array_search($wordp, $wes);
+                    $i = array_search($wordp, $wes, true);
                     unset($wes[$i]);
                     array_splice($wes, $i, 0, $word);
                     $x2 = $this->array_count_values_of($wes, $wordp);
