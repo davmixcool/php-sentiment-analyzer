@@ -32,6 +32,7 @@ class Analyzer
     */
     public function IsNegated($wordToTest, $include_nt = true)
     {
+        $wordToTest = strtolower($wordToTest);
         if (in_array($wordToTest, Config::NEGATE)) {
             return true;
         }
