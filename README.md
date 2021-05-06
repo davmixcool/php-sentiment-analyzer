@@ -2,7 +2,7 @@
 
 PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that is used to understand sentiments in a sentence using VADER \(Valence Aware Dictionary and sentiment Reasoner\).
 
-[![GitHub license](https://img.shields.io/github/license/davmixcool/php-sentiment-analyzer.svg)](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/davmixcool/php-sentiment-analyzer.svg)](https://github.com/davmixcool/php-sentiment-analyzer/issues) [![Twitter](https://img.shields.io/twitter/url/https/github.com/davmixcool/php-sentiment-analyzer.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fdavmixcool%2Fphp-sentiment-analyzer)
+[![GitHub license](https://img.shields.io/github/license/davmixcool/php-sentiment-analyzer.svg)](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/davmixcool/php-sentiment-analyzer.svg)](https://github.com/davmixcool/php-sentiment-analyzer/issues) [![Stable](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/v/stable.svg)](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/v/stable.svg) [![Download](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/d/total.svg)](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/d/total.svg) [![Twitter](https://img.shields.io/twitter/url/https/github.com/davmixcool/php-sentiment-analyzer.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fdavmixcool%2Fphp-sentiment-analyzer)
 
 ## Features
 
@@ -18,6 +18,8 @@ PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that 
 
 * [Install](./#install)
 * [Usage](./#usage)
+* [Stargazers](./#stargazers)
+* [Forkers](./#forkers)
 * [License](./#license)
 * [Reference](./#reference)
 
@@ -115,6 +117,14 @@ Marie was enthusiastic about the upcoming trip. Her brother was also passionate 
 
 String: To be or not to be?  ------------- {"neg":0,"neu":1,"pos":0,"compound":0}
 ```
+
+### Stargazers
+
+[![Stargazers repo roster for @davmixcool/php-sentiment-analyzer](https://reporoster.com/stars/davmixcool/php-sentiment-analyzer)](https://github.com/davmixcool/php-sentiment-analyzer/stargazers)
+
+### Forkers
+
+[![Forkers repo roster for @davmixcool/php-sentiment-analyzer](https://reporoster.com/forks/davmixcool/php-sentiment-analyzer)](https://github.com/davmixcool/php-sentiment-analyzer/network/members)
 
 ### License
 
