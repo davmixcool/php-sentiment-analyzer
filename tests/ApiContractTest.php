@@ -159,6 +159,10 @@ final class ApiContractTest extends TestCase
         // When v2.0 declares these properties this test FAILS — that is the
         // signal to flip failOnDeprecation to "true" in phpunit.xml and delete
         // this test. It exists so the cleanup cannot be forgotten.
+        if (PHP_VERSION_ID < 80200) {
+            $this->markTestSkipped('Dynamic properties are only deprecated from PHP 8.2.');
+        }
+
         $deprecations = [];
 
         set_error_handler(

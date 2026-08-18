@@ -99,6 +99,10 @@ they cannot work until the idiom matcher does.
 without declaring them (`src/Analyzer.php:25` and `:27`). Deprecated since PHP
 8.2; two notices fire on every instantiation.
 
+**PHP 8.1 emits nothing** — dynamic properties are not deprecated there. The
+suite therefore reports 368 passing on 8.2–8.4 and 367 passing plus 1 skipped on
+8.1, which is expected, not a gap.
+
 `phpunit.xml` therefore sets `failOnDeprecation="false"`.
 
 **Scheduled for v2.0**, where declaring the properties is part of the

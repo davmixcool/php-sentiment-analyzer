@@ -2,7 +2,15 @@
     "name": "davmixcool/php-sentiment-analyzer",
     "type": "library",
     "description": "PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that is used to understand sentiments in a sentence using VADER (Valence Aware Dictionary and sentiment Reasoner).",
-    "keywords": ["NLP","Sentiment Analyzer","Deep Learning","Machine Learning","AI","Social","PHP"],
+    "keywords": [
+        "NLP",
+        "Sentiment Analyzer",
+        "Deep Learning",
+        "Machine Learning",
+        "AI",
+        "Social",
+        "PHP"
+    ],
     "homepage": "https://github.com/davmixcool/php-sentiment-analyzer",
     "license": "MIT",
     "authors": [
@@ -13,8 +21,8 @@
         }
     ],
     "require": {
-    	"php": ">=5.5.9"
-	 },
+        "php": ">=5.5.9"
+    },
     "require-dev": {
         "phpunit/phpunit": "^10.5"
     },
@@ -30,7 +38,8 @@
     },
     "scripts": {
         "test": "phpunit",
-        "baseline": "php tools/generate-baseline.php"
+        "baseline": "php tools/generate-baseline.php",
+        "matrix": "./tools/test-matrix.sh"
     },
     "config": {
         "sort-packages": true

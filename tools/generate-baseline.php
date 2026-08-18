@@ -11,6 +11,10 @@
  * here; v2.0 guarantees byte-identical parity with these numbers.
  *
  * Usage: composer baseline
+ *        php tools/generate-baseline.php [output-path]
+ *
+ * The optional output path lets tools/test-matrix.sh generate a fixture per PHP
+ * version into scratch space and diff it, without touching the committed one.
  */
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -321,6 +325,8 @@ $json = json_encode(
     JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR
 );
 
-file_put_contents(OUTPUT_PATH, $json . "\n");
+$outputPath = $argv[1] ?? OUTPUT_PATH;
 
-printf("Wrote %d pinned cases to %s\n", count($baseline), realpath(OUTPUT_PATH));
+file_put_contents($outputPath, $json . "\n");
+
+printf("Wrote %d pinned cases to %s\n", count($baseline), realpath($outputPath));
