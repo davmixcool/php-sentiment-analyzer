@@ -39,7 +39,8 @@
     "scripts": {
         "test": "phpunit",
         "baseline": "php tools/generate-baseline.php",
-        "matrix": "./tools/test-matrix.sh"
+        "matrix": "./tools/test-matrix.sh",
+        "matrix:fresh": "./tools/test-matrix.sh --fresh"
     },
     "config": {
         "sort-packages": true
