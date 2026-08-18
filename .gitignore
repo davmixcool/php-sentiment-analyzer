@@ -12,3 +12,5 @@ composer.lock
 vagrant_ansible_inventory_default
 Vagrantfile
 .DS_Store
+/.phpunit.cache
+.phpunit.result.cache

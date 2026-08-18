@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         cacheDirectory=".phpunit.cache"
+         executionOrder="defects"
+         beStrictAboutOutputDuringTests="true"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         failOnWarning="true"
+         failOnNotice="true"
+         failOnDeprecation="false">
+    <!--
+        failOnDeprecation is false ONLY because v1 creates dynamic properties
+        ($emoji_lexicon, $emojis in src/Analyzer.php), deprecated since PHP 8.2.
+        These are catalogued in KNOWN-DIVERGENCES.md and fixed in v2.0.
+        Flip this to "true" as part of v2.0 — it is a Definition of Done gate.
+    -->
+    <testsuites>
+        <testsuite name="Characterization">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
+</phpunit>

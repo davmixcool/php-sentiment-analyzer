@@ -53,7 +53,7 @@ print_r($output_text_with_emoji);
 ### Simple Outputs
 
 ```text
-David is smart, handsome, and funny. ---------------- ['neg'=> 0.0, 'neu'=> 0.337, 'pos'=> 0.663, 'compound'=> 0.7096]
+David is smart, handsome, and funny. ---------------- ['neg'=> 0.0, 'neu'=> 0.254, 'pos'=> 0.746, 'compound'=> 0.8316]
 
 😁 ------------------- ['neg' => 0, 'neu' => 0.5, 'pos' => 0.5, 'compound' => 0.4588]
 
