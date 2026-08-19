@@ -4,7 +4,7 @@ All notable changes to this project are documented here.
 
 This project follows [Semantic Versioning](https://semver.org/).
 
-## [2.0.0] - unreleased
+## [2.0.0] - 2026-08-19
 
 ### Scores are unchanged
 
@@ -64,6 +64,27 @@ legacy array uses `pos`/`neg`/`neu` — see `MIGRATION.md`.
   license requires. The data itself is unchanged.
 
 ### Fixed — documentation
+
+- The README's MIT license links pointed at `/blob/master/LICENSE`, which 404s;
+  the file is `LICENCE.txt`.
+
+## [1.3.1] - 2026-08-19
+
+### Scores are unchanged
+
+Documentation only. No source file was modified, and every pinned score in the
+characterization suite is byte-identical to 1.3.0. **There is no need to
+re-score stored text for this release.**
+
+### Added
+
+- `NOTICE.md` and `src/Lexicons/README.md` — attribution and the full MIT
+  license text for the bundled VADER sentiment and emoji lexicons, which are
+  third-party data from [cjhutto/vaderSentiment](https://github.com/cjhutto/vaderSentiment)
+  (Copyright (c) 2016 C.J. Hutto). Both ship in the release tarball, as the
+  license requires. The lexicon data itself is unchanged.
+
+### Fixed
 
 - The README's MIT license links pointed at `/blob/master/LICENSE`, which 404s;
   the file is `LICENCE.txt`.
