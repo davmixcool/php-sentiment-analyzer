@@ -8,7 +8,7 @@ use Sentiment\Analyzer;
 use Sentiment\Exceptions\InvalidLexiconException;
 
 /**
- * Pins the frozen backward-compatibility surface from PRD §3.
+ * Pins the frozen backward-compatibility surface documented in MIGRATION.md.
  *
  * These are the guarantees v2 must not break. Unlike CharacterizationTest,
  * which pins numbers, this pins SHAPE: return keys, mutation semantics, and
@@ -27,8 +27,9 @@ final class ApiContractTest extends TestCase
 
     public function testGetSentimentReturnsPlainArrayNotAnObject(): void
     {
-        // PRD §3: getSentiment() must NOT return SentimentResult, and
-        // SentimentResult must NOT implement ArrayAccess. Assert the DECLARED
+        // getSentiment() must NOT return SentimentResult, and SentimentResult
+        // must NOT implement ArrayAccess — bridging the two shapes is where
+        // subtle breakage hides. Assert the DECLARED
         // return type rather than the runtime value — that is what callers
         // and static analysis actually depend on, and a change to an object
         // type would be caught here even if it were array-like at runtime.
@@ -150,7 +151,8 @@ final class ApiContractTest extends TestCase
 
     public function testNoRuntimeCodePathPerformsNetworkIo(): void
     {
-        // PRD: "Runtime inference must never require a network connection."
+        // Inference must never require a network connection: the package is
+        // local and deterministic by design.
         $forbidden = [
             'file_get_contents(http', 'curl_init', 'curl_exec', 'fsockopen',
             'stream_socket_client', 'fopen(http', 'http_get', 'socket_create',

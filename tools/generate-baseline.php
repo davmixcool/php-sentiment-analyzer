@@ -282,7 +282,8 @@ foreach ([
     $corpus[$key] = ['text' => $text, 'lexicon' => $readmeLexicon];
 }
 
-// updateLexicon() semantics frozen by the BC contract (PRD §3).
+// updateLexicon() semantics are frozen by the backward-compatibility
+// contract; see MIGRATION.md.
 $corpus['custom_lexicon/new_term']        = ['text' => 'it was slaps',   'lexicon' => ['slaps' => 2.2]];
 $corpus['custom_lexicon/override']        = ['text' => 'it was good',    'lexicon' => ['good' => -3.0]];
 $corpus['custom_lexicon/uppercase_key']   = ['text' => 'it was snappy',  'lexicon' => ['SNAPPY' => 1.8]];

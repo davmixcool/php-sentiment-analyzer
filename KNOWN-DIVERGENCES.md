@@ -3,10 +3,9 @@
 Behaviour that is **pinned in `tests/fixtures/baseline.json` because it is what
 the code currently does — not because it is correct.**
 
-v2.0 guarantees byte-identical scores with v1 (see the Scoring Parity section of
-the v2 PRD). Everything still listed as outstanding below is therefore
-reproduced exactly in v2.0 and fixed in a later release, each with a
-`CHANGELOG.md` entry.
+v2.0 guarantees byte-identical scores with v1. Everything still listed as
+outstanding below is therefore reproduced exactly in v2.0 and fixed in a later
+release, each with a `CHANGELOG.md` entry.
 
 Items marked FIXED were corrected deliberately, with their pinned cases re-based
 in the same commit and the movement documented here.
@@ -79,9 +78,10 @@ which only agrees trivially because its table value is zero).
 
 Corpus sections: `idiom/*`, `idiom_sentence/*`.
 
-**Note for v2:** this interacts with the PRD's custom-lexicon design. Multi-word
-keys passed to `withLexicon()` land in the term lexicon, not the idiom table, so
-they cannot work until the idiom matcher does.
+**Note for v2:** this constrains custom lexicons. Multi-word keys passed to
+`withLexicon()` would land in the term lexicon, not the idiom table, so they
+cannot work until the idiom matcher does — which is why `withLexicon()` rejects
+them outright rather than accepting them and doing nothing.
 
 ---
 
