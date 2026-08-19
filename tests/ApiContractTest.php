@@ -7,7 +7,7 @@ use ReflectionClass;
 use Sentiment\Analyzer;
 
 /**
- * Pins the frozen backward-compatibility surface from PRD §3.
+ * Pins the frozen backward-compatibility surface of the package.
  *
  * These are the guarantees v2 must not break. Unlike CharacterizationTest,
  * which pins numbers, this pins SHAPE: return keys, mutation semantics, and
@@ -26,9 +26,9 @@ final class ApiContractTest extends TestCase
 
     public function testGetSentimentReturnsPlainArrayNotAnObject(): void
     {
-        // PRD §3: getSentiment() must NOT return SentimentResult in v2, and
-        // SentimentResult must NOT implement ArrayAccess. This test is the
-        // tripwire for that decision.
+        // getSentiment() must NOT return an object in v2, and the v2 result
+        // type must NOT implement ArrayAccess — bridging the two shapes is
+        // where subtle breakage hides. This test is the tripwire.
         $this->assertIsArray((new Analyzer())->getSentiment('This is good.'));
     }
 
@@ -126,7 +126,8 @@ final class ApiContractTest extends TestCase
 
     public function testNoRuntimeCodePathPerformsNetworkIo(): void
     {
-        // PRD: "Runtime inference must never require a network connection."
+        // Inference must never require a network connection: the package is
+        // local and deterministic by design.
         $forbidden = [
             'file_get_contents(http', 'curl_init', 'curl_exec', 'fsockopen',
             'stream_socket_client', 'fopen(http', 'http_get', 'socket_create',

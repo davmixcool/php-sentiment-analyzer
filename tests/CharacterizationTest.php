@@ -9,9 +9,8 @@ use Sentiment\Analyzer;
 /**
  * Golden-master suite pinning the behaviour of the CURRENT implementation.
  *
- * Milestone 0 of the v2 PRD: this must run green against unmodified v1 before
- * any refactor begins, and must stay green through v2.0, which guarantees
- * byte-identical scores.
+ * This must run green against unmodified v1 before any refactor begins, and
+ * must stay green through v2.0, which guarantees byte-identical scores.
  *
  * A failure here means a score moved. That is a regression unless it is an
  * intentional, changelogged scoring change — and those are out of scope for
