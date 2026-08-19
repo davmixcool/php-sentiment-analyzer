@@ -2,7 +2,7 @@
 
 PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that is used to understand sentiments in a sentence using VADER \(Valence Aware Dictionary and sentiment Reasoner\).
 
-[![GitHub license](https://img.shields.io/github/license/davmixcool/php-sentiment-analyzer.svg)](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/LICENCE.txt) [![GitHub issues](https://img.shields.io/github/issues/davmixcool/php-sentiment-analyzer.svg)](https://github.com/davmixcool/php-sentiment-analyzer/issues) [![Stable](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/v/stable.svg)](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/v/stable.svg) [![Download](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/d/total.svg)](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/d/total.svg) [![Twitter](https://img.shields.io/twitter/url/https/github.com/davmixcool/php-sentiment-analyzer.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fdavmixcool%2Fphp-sentiment-analyzer)
+[![CI](https://img.shields.io/github/actions/workflow/status/davmixcool/php-sentiment-analyzer/ci.yml?branch=1.x&label=CI)](https://github.com/davmixcool/php-sentiment-analyzer/actions/workflows/ci.yml) [![Latest Version](https://img.shields.io/packagist/v/davmixcool/php-sentiment-analyzer?label=latest)](https://packagist.org/packages/davmixcool/php-sentiment-analyzer) [![PHP Version](https://img.shields.io/packagist/php-v/davmixcool/php-sentiment-analyzer/1.x-dev?label=php)](https://packagist.org/packages/davmixcool/php-sentiment-analyzer) [![Total Downloads](https://img.shields.io/packagist/dt/davmixcool/php-sentiment-analyzer)](https://packagist.org/packages/davmixcool/php-sentiment-analyzer) [![License](https://img.shields.io/packagist/l/davmixcool/php-sentiment-analyzer)](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/LICENCE.txt) [![Stars](https://img.shields.io/github/stars/davmixcool/php-sentiment-analyzer)](https://github.com/davmixcool/php-sentiment-analyzer/stargazers) [![Forks](https://img.shields.io/github/forks/davmixcool/php-sentiment-analyzer)](https://github.com/davmixcool/php-sentiment-analyzer/network/members)
 
 ## Features
 
@@ -20,8 +20,6 @@ PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that 
 * [Simple Usage](#simple-usage)
 * [Advanced Usage](#advanced-usage)
 * [Upgrading](#upgrading)
-* [Stargazers](#stargazers)
-* [Forkers](#forkers)
 * [License](#license)
 * [Reference](#reference)
 
@@ -142,14 +140,6 @@ The genuine "never" behaviour is unchanged: `never so good` still scores -0.2385
 If you store sentiment scores or compare them against thresholds, re-score any
 affected text after upgrading. Full details in the
 [changelog](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/CHANGELOG.md).
-
-### Stargazers
-
-[![Stargazers repo roster for @davmixcool/php-sentiment-analyzer](https://reporoster.com/stars/davmixcool/php-sentiment-analyzer)](https://github.com/davmixcool/php-sentiment-analyzer/stargazers)
-
-### Forkers
-
-[![Forkers repo roster for @davmixcool/php-sentiment-analyzer](https://reporoster.com/forks/davmixcool/php-sentiment-analyzer)](https://github.com/davmixcool/php-sentiment-analyzer/network/members)
 
 ### License
 
