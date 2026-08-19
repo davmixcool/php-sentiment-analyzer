@@ -2,7 +2,7 @@
 
 PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that is used to understand sentiments in a sentence using VADER \(Valence Aware Dictionary and sentiment Reasoner\).
 
-[![GitHub license](https://img.shields.io/github/license/davmixcool/php-sentiment-analyzer.svg)](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/davmixcool/php-sentiment-analyzer.svg)](https://github.com/davmixcool/php-sentiment-analyzer/issues) [![Stable](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/v/stable.svg)](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/v/stable.svg) [![Download](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/d/total.svg)](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/d/total.svg) [![Twitter](https://img.shields.io/twitter/url/https/github.com/davmixcool/php-sentiment-analyzer.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fdavmixcool%2Fphp-sentiment-analyzer)
+[![CI](https://img.shields.io/github/actions/workflow/status/davmixcool/php-sentiment-analyzer/ci.yml?branch=2.x&label=CI)](https://github.com/davmixcool/php-sentiment-analyzer/actions/workflows/ci.yml) [![Latest Version](https://img.shields.io/packagist/v/davmixcool/php-sentiment-analyzer?label=latest)](https://packagist.org/packages/davmixcool/php-sentiment-analyzer) [![PHP Version](https://img.shields.io/packagist/php-v/davmixcool/php-sentiment-analyzer/2.x-dev?label=php)](https://packagist.org/packages/davmixcool/php-sentiment-analyzer) [![Total Downloads](https://img.shields.io/packagist/dt/davmixcool/php-sentiment-analyzer)](https://packagist.org/packages/davmixcool/php-sentiment-analyzer) [![License](https://img.shields.io/packagist/l/davmixcool/php-sentiment-analyzer)](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/LICENCE.txt) [![Stars](https://img.shields.io/github/stars/davmixcool/php-sentiment-analyzer)](https://github.com/davmixcool/php-sentiment-analyzer/stargazers) [![Forks](https://img.shields.io/github/forks/davmixcool/php-sentiment-analyzer)](https://github.com/davmixcool/php-sentiment-analyzer/network/members)
 
 ## Features
 
@@ -12,22 +12,26 @@ PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that 
 
 ## Requirements
 
-* PHP 5.5 and above
+* PHP 8.1 and above
+
+> Using PHP below 8.1? Install the `1.x` line instead — it is maintained and
+> produces the same scores:
+> `composer require davmixcool/php-sentiment-analyzer:^1.3`
 
 ## Contents
 
 * [Install](#install)
+* [Modern API](#modern-api)
 * [Simple Usage](#simple-usage)
 * [Advanced Usage](#advanced-usage)
 * [Upgrading](#upgrading)
-* [Stargazers](#stargazers)
-* [Forkers](#forkers)
 * [License](#license)
 * [Reference](#reference)
 
 ## Documentation
 
 * [Changelog](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/CHANGELOG.md) — release history, including scoring changes
+* [Migrating from 1.x to 2.0](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/MIGRATION.md) — breaking changes, and why your scores do not move
 * [Known divergences](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/KNOWN-DIVERGENCES.md) — behaviour that differs from reference VADER, documented and pinned by the test suite
 
 ### Install
@@ -39,6 +43,57 @@ Run the following to include this via Composer
 ```text
 composer require davmixcool/php-sentiment-analyzer
 ```
+
+### Modern API
+
+Available from 2.0. Returns an immutable result object instead of a bare array.
+
+```php
+use Sentiment\Analyzer;
+
+$analyzer = new Analyzer();
+$result   = $analyzer->analyze('This update is really good!');
+
+$result->compound();    // 0.5355
+$result->label();       // 'positive'
+$result->isPositive();  // true
+$result->positive();    // 0.463
+$result->toArray();     // ['positive' => 0.463, 'negative' => 0.0, 'neutral' => 0.537, 'compound' => 0.5355, 'label' => 'positive']
+```
+
+Labels follow the VADER convention and are exposed as constants, so you can
+reclassify without hardcoding: `compound >= 0.05` is positive, `<= -0.05` is
+negative, and anything between is neutral.
+
+**Batch analysis** preserves your input keys, so results line up with their
+source rows:
+
+```php
+$results = $analyzer->analyzeMany([
+    'ticket-1' => 'This update is really good!',
+    'ticket-2' => 'This product is terrible.',
+    'ticket-3' => 'It works fine.',
+]);
+
+$results['ticket-2']->label();     // 'negative'
+$results['ticket-2']->compound();  // -0.4767
+```
+
+**Custom lexicons** return a *new* analyzer — the original is untouched:
+
+```php
+$slang = $analyzer->withLexicon([
+    'slaps' => 2.2,
+    'mid'   => -1.7,
+]);
+
+$slang->analyze('that beat slaps')->compound();    //  0.4939
+$slang->analyze('the update is mid')->compound();  // -0.4019
+$analyzer->analyze('that beat slaps')->compound(); //  0.0 — unchanged
+```
+
+`withLexicon()` rejects multi-word terms and non-numeric values rather than
+coercing them. The older `updateLexicon()` below stays lenient and unchanged.
 
 ### Simple Usage
 
@@ -143,17 +198,15 @@ If you store sentiment scores or compare them against thresholds, re-score any
 affected text after upgrading. Full details in the
 [changelog](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/CHANGELOG.md).
 
-### Stargazers
-
-[![Stargazers repo roster for @davmixcool/php-sentiment-analyzer](https://reporoster.com/stars/davmixcool/php-sentiment-analyzer)](https://github.com/davmixcool/php-sentiment-analyzer/stargazers)
-
-### Forkers
-
-[![Forkers repo roster for @davmixcool/php-sentiment-analyzer](https://reporoster.com/forks/davmixcool/php-sentiment-analyzer)](https://github.com/davmixcool/php-sentiment-analyzer/network/members)
-
 ### License
 
-This package is licensed under the [MIT license](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/LICENSE).
+The package's source code is licensed under the
+[MIT license](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/LICENCE.txt).
+
+The bundled sentiment and emoji lexicons in `src/Lexicons/` are **third-party
+data**, redistributed from [cjhutto/vaderSentiment](https://github.com/cjhutto/vaderSentiment)
+under its own MIT license (Copyright (c) 2016 C.J. Hutto). Full attribution and
+license text are in [NOTICE.md](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/NOTICE.md).
 
 ### Reference
 

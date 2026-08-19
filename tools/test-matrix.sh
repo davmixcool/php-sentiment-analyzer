@@ -202,7 +202,7 @@ for version in "${VERSIONS[@]}"; do
         # Install + test + generate in one container (see docker_fresh).
         if out="$(docker_fresh "$image" "$stage" "$version" 2>&1)"; then
             printf 'install: ok  '
-            summary="$(grep -E '^Tests:' <<<"$out" | tail -1 || true)"
+            summary="$(grep -E '^(OK|Tests:)' <<<"$out" | tail -1 || true)"
             printf 'tests: %-46s ' "${summary:-OK}"
         else
             if grep -q '###PHPUNIT###' <<<"$out"; then
@@ -219,7 +219,7 @@ for version in "${VERSIONS[@]}"; do
     else
         # 1. Test suite
         if test_output="$(docker_run "$image" "$stage" php vendor/bin/phpunit 2>&1)"; then
-            summary="$(grep -E '^Tests:' <<<"$test_output" | tail -1 || true)"
+            summary="$(grep -E '^(OK|Tests:)' <<<"$test_output" | tail -1 || true)"
             printf 'tests: %-46s ' "${summary:-OK}"
         else
             printf 'tests: FAILED\n'

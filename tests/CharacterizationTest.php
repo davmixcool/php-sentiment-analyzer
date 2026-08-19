@@ -9,9 +9,8 @@ use Sentiment\Analyzer;
 /**
  * Golden-master suite pinning the behaviour of the CURRENT implementation.
  *
- * Milestone 0 of the v2 PRD: this must run green against unmodified v1 before
- * any refactor begins, and must stay green through v2.0, which guarantees
- * byte-identical scores.
+ * This must run green against unmodified v1 before any refactor begins, and
+ * must stay green through v2.0, which guarantees byte-identical scores.
  *
  * A failure here means a score moved. That is a regression unless it is an
  * intentional, changelogged scoring change — and those are out of scope for
@@ -85,6 +84,42 @@ final class CharacterizationTest extends TestCase
             $actual,
             sprintf('Score drift on "%s" (text: %s)', $key, var_export($case['text'], true))
         );
+    }
+
+    /**
+     * The new API must never drift from the scoring contract.
+     *
+     * Rather than duplicating 355 fixture cases, assert that analyze() agrees
+     * with the pinned values everywhere. If analyze() ever stops delegating to
+     * getSentiment(), this fails against the same golden master.
+     */
+    #[DataProvider('provideCases')]
+    public function testAnalyzeAgreesWithGetSentimentAcrossTheBaseline(string $key, array $case): void
+    {
+        if (isset($case['lexicon'])) {
+            $analyzer = new Analyzer();
+            $analyzer->updateLexicon($case['lexicon']);
+        } else {
+            $analyzer = self::sharedAnalyzer();
+        }
+
+        $result = $analyzer->analyze($case['text']);
+
+        $actual = [
+            'neg' => sprintf('%.3f', $result->negative()),
+            'neu' => sprintf('%.3f', $result->neutral()),
+            'pos' => sprintf('%.3f', $result->positive()),
+            'compound' => sprintf('%.4f', $result->compound()),
+        ];
+
+        $expected = [
+            'neg' => $case['neg'],
+            'neu' => $case['neu'],
+            'pos' => $case['pos'],
+            'compound' => $case['compound'],
+        ];
+
+        $this->assertSame($expected, $actual, sprintf('analyze() drifted on "%s"', $key));
     }
 
     public function testBaselineCoversEveryRuleTableEntry(): void

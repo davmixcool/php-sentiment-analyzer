@@ -1,0 +1,11 @@
+parameters:
+    level: 5
+    paths:
+        - src
+        - tests
+        - tools
+
+    # Level 6 currently reports ~48 "no value type specified in iterable type"
+    # findings. Those need generic array annotations throughout the scoring
+    # path, which is worth doing — but as its own change, not folded into the
+    # modernization, where it would obscure the diff that must prove parity.

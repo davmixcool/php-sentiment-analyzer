@@ -5,9 +5,10 @@ namespace Sentiment\Tests;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Sentiment\Analyzer;
+use Sentiment\Exceptions\InvalidLexiconException;
 
 /**
- * Pins the frozen backward-compatibility surface from PRD §3.
+ * Pins the frozen backward-compatibility surface documented in MIGRATION.md.
  *
  * These are the guarantees v2 must not break. Unlike CharacterizationTest,
  * which pins numbers, this pins SHAPE: return keys, mutation semantics, and
@@ -26,10 +27,18 @@ final class ApiContractTest extends TestCase
 
     public function testGetSentimentReturnsPlainArrayNotAnObject(): void
     {
-        // PRD §3: getSentiment() must NOT return SentimentResult in v2, and
-        // SentimentResult must NOT implement ArrayAccess. This test is the
-        // tripwire for that decision.
-        $this->assertIsArray((new Analyzer())->getSentiment('This is good.'));
+        // getSentiment() must NOT return SentimentResult, and SentimentResult
+        // must NOT implement ArrayAccess — bridging the two shapes is where
+        // subtle breakage hides. Assert the DECLARED
+        // return type rather than the runtime value — that is what callers
+        // and static analysis actually depend on, and a change to an object
+        // type would be caught here even if it were array-like at runtime.
+        $returnType = (new ReflectionClass(Analyzer::class))
+            ->getMethod('getSentiment')
+            ->getReturnType();
+
+        $this->assertNotNull($returnType, 'getSentiment() must declare a return type');
+        $this->assertSame('array', (string) $returnType);
     }
 
     public function testGetSentimentValuesAreNumeric(): void
@@ -124,9 +133,26 @@ final class ApiContractTest extends TestCase
         );
     }
 
+    public function testMissingLexiconThrowsInsteadOfKillingTheProcess(): void
+    {
+        // v1 called die() here, terminating the host application. v2 throws.
+        // Accepted break, documented in MIGRATION.md.
+        $this->expectException(InvalidLexiconException::class);
+
+        new Analyzer('Lexicons/does-not-exist.txt');
+    }
+
+    public function testMissingEmojiLexiconThrows(): void
+    {
+        $this->expectException(InvalidLexiconException::class);
+
+        new Analyzer('Lexicons/vader_sentiment_lexicon.txt', 'Lexicons/nope.txt');
+    }
+
     public function testNoRuntimeCodePathPerformsNetworkIo(): void
     {
-        // PRD: "Runtime inference must never require a network connection."
+        // Inference must never require a network connection: the package is
+        // local and deterministic by design.
         $forbidden = [
             'file_get_contents(http', 'curl_init', 'curl_exec', 'fsockopen',
             'stream_socket_client', 'fopen(http', 'http_get', 'socket_create',
@@ -153,35 +179,4 @@ final class ApiContractTest extends TestCase
         }
     }
 
-    public function testKnownDynamicPropertyDeprecationsStillPresent(): void
-    {
-        // Documents the two deprecations catalogued in KNOWN-DIVERGENCES.md.
-        // When v2.0 declares these properties this test FAILS — that is the
-        // signal to flip failOnDeprecation to "true" in phpunit.xml and delete
-        // this test. It exists so the cleanup cannot be forgotten.
-        if (PHP_VERSION_ID < 80200) {
-            $this->markTestSkipped('Dynamic properties are only deprecated from PHP 8.2.');
-        }
-
-        $deprecations = [];
-
-        set_error_handler(
-            static function (int $severity, string $message) use (&$deprecations): bool {
-                $deprecations[] = $message;
-                return true;
-            },
-            E_DEPRECATED
-        );
-
-        try {
-            new Analyzer();
-        } finally {
-            restore_error_handler();
-        }
-
-        $joined = implode("\n", $deprecations);
-
-        $this->assertStringContainsString('emoji_lexicon', $joined);
-        $this->assertStringContainsString('emojis', $joined);
-    }
 }

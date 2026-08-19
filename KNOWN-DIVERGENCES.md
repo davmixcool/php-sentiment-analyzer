@@ -3,10 +3,9 @@
 Behaviour that is **pinned in `tests/fixtures/baseline.json` because it is what
 the code currently does — not because it is correct.**
 
-v2.0 guarantees byte-identical scores with v1 (see the Scoring Parity section of
-the v2 PRD). Everything still listed as outstanding below is therefore
-reproduced exactly in v2.0 and fixed in a later release, each with a
-`CHANGELOG.md` entry.
+v2.0 guarantees byte-identical scores with v1. Everything still listed as
+outstanding below is therefore reproduced exactly in v2.0 and fixed in a later
+release, each with a `CHANGELOG.md` entry.
 
 Items marked FIXED were corrected deliberately, with their pinned cases re-based
 in the same commit and the movement documented here.
@@ -79,30 +78,27 @@ which only agrees trivially because its table value is zero).
 
 Corpus sections: `idiom/*`, `idiom_sentence/*`.
 
-**Note for v2:** this interacts with the PRD's custom-lexicon design. Multi-word
-keys passed to `withLexicon()` land in the term lexicon, not the idiom table, so
-they cannot work until the idiom matcher does.
+**Note for v2:** this constrains custom lexicons. Multi-word keys passed to
+`withLexicon()` would land in the term lexicon, not the idiom table, so they
+cannot work until the idiom matcher does — which is why `withLexicon()` rejects
+them outright rather than accepting them and doing nothing.
 
 ---
 
-## 3. Dynamic property deprecations (PHP 8.2+)
+## 3. Dynamic property deprecations (PHP 8.2+) — FIXED in 2.0.0
 
-`Analyzer::__construct()` assigns `$this->emoji_lexicon` and `$this->emojis`
-without declaring them (`src/Analyzer.php:25` and `:27`). Deprecated since PHP
-8.2; two notices fire on every instantiation.
+`Analyzer::__construct()` assigned `$this->emoji_lexicon` and `$this->emojis`
+without declaring them (`src/Analyzer.php`). Deprecated since PHP 8.2; two
+notices fired on every instantiation. PHP 8.1 emitted nothing, as dynamic
+properties were not deprecated there.
 
-**PHP 8.1 emits nothing** — dynamic properties are not deprecated there. The
-suite therefore reports 368 passing on 8.2–8.4 and 367 passing plus 1 skipped on
-8.1, which is expected, not a gap.
+Both are now declared and typed. `phpunit.xml` sets `failOnDeprecation="true"`,
+so any new deprecation fails the build, and the
+`testKnownDynamicPropertyDeprecationsStillPresent()` tripwire has been removed —
+it had done its job.
 
-`phpunit.xml` therefore sets `failOnDeprecation="false"`.
-
-**Scheduled for v2.0**, where declaring the properties is part of the
-modernization. `ApiContractTest::testKnownDynamicPropertyDeprecationsStillPresent()`
-fails once they are declared — that failure is the signal to flip
-`failOnDeprecation` to `true` and delete the test.
-
----
+Fixed on the `2.x` line only. The `1.x` maintenance line still emits these
+notices on PHP 8.2+, which is expected: it exists to support PHP < 8.1.
 
 ## 4. VADER lexicon file carries a UTF-8 BOM
 

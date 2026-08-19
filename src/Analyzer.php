@@ -3,6 +3,8 @@
 namespace Sentiment;
 
 use Sentiment\Config\Config;
+use Sentiment\Exceptions\InvalidLexiconException;
+use Sentiment\Exceptions\InvalidLexiconTermException;
 use Sentiment\Procedures\SentiText;
 
 /*
@@ -11,12 +13,19 @@ use Sentiment\Procedures\SentiText;
 
 class Analyzer
 {
-    private $lexicon_file = "";
-    private $lexicon = "";
+    private string $lexicon_file = "";
 
-    private $current_sentitext = null;
+    private string $emoji_lexicon = "";
 
-    public function __construct($lexicon_file = "Lexicons/vader_sentiment_lexicon.txt",$emoji_lexicon='Lexicons/emoji_utf8_lexicon.txt')
+    /** @var array<string, mixed> Term => valence, as read from the lexicon file. */
+    private array $lexicon = [];
+
+    /** @var array<string, string> Emoji character => description. */
+    private array $emojis = [];
+
+    private ?SentiText $current_sentitext = null;
+
+    public function __construct(string $lexicon_file = "Lexicons/vader_sentiment_lexicon.txt", string $emoji_lexicon = 'Lexicons/emoji_utf8_lexicon.txt')
     {
         //Not sure about this as it forces lexicon file to be in the same directory as executing script
         $this->lexicon_file = __DIR__ . DIRECTORY_SEPARATOR . $lexicon_file;
@@ -30,7 +39,7 @@ class Analyzer
     /*
         Determine if input contains negation words
     */
-    public function IsNegated($wordToTest, $include_nt = true)
+    private function IsNegated(string $wordToTest, bool $include_nt = true): bool
     {
         $wordToTest = strtolower($wordToTest);
         if (in_array($wordToTest, Config::NEGATE)) {
@@ -49,30 +58,28 @@ class Analyzer
     /*
         Convert lexicon file to a dictionary
     */
-    public function make_lex_dict()
+    private function make_lex_dict(): array
     {
         $lex_dict = [];
-        $fp = fopen($this->lexicon_file, "r");
+        $fp = @fopen($this->lexicon_file, "r");
         if (!$fp) {
-            die("Cannot load lexicon file");
+            throw InvalidLexiconException::unreadable($this->lexicon_file);
         }
 
         while (($line = fgets($fp, 4096)) !== false) {
             list($word, $measure) = explode("\t", trim($line));
-            //.strip().split('\t')[0:2]
-            $lex_dict[$word] = $measure;
-            //lex_dict[word] = float(measure)
+            $lex_dict[$word] = (float) $measure;
         }
 
         return $lex_dict;
     }
 
 
-    public function make_emoji_dict() {
+    private function make_emoji_dict(): array {
         $emoji_dict = [];
-        $fp = fopen($this->emoji_lexicon, "r");
+        $fp = @fopen($this->emoji_lexicon, "r");
         if (!$fp) {
-            die("Cannot load emoji lexicon file");
+            throw InvalidLexiconException::unreadable($this->emoji_lexicon);
         }
 
         while (($line = fgets($fp, 4096)) !== false) {
@@ -87,18 +94,12 @@ class Analyzer
     public function updateLexicon($arr)
     {
         if(!is_array($arr)) return [];
-        $lexicon = [];
         foreach ($arr as $word => $valence) {
             $this->lexicon[strtolower($word)] = is_numeric($valence)? $valence : 0;
         }
     }
 
-    private function IsKindOf($firstWord, $secondWord)
-    {
-        return "kind" === strtolower($firstWord) && "of" === strtolower($secondWord);
-    }
-
-    private function IsBoosterWord($word)
+    private function IsBoosterWord(string $word): bool
     {
         return array_key_exists(strtolower($word), Config::BOOSTER_DICT);
     }
@@ -108,14 +109,14 @@ class Analyzer
         return Config::BOOSTER_DICT[strtolower($word)];
     }
 
-    private function IsInLexicon($word)
+    private function IsInLexicon(string $word): bool
     {
         $lowercase = strtolower($word);
 
         return array_key_exists($lowercase, $this->lexicon);
     }
 
-    private function IsUpperCaseWord($word)
+    private function IsUpperCaseWord(string $word): bool
     {
         return ctype_upper($word);
     }
@@ -125,7 +126,7 @@ class Analyzer
         return $this->lexicon[strtolower($word)];
     }
 
-    private function getTargetWordFromContext($wordInContext)
+    private function getTargetWordFromContext(array $wordInContext): string
     {
         return $wordInContext[count($wordInContext)-1];
     }
@@ -133,7 +134,7 @@ class Analyzer
     /*
         Gets the precedding two words to check for emphasis
     */
-    private function getWordInContext($wordList, $currentWordPosition)
+    private function getWordInContext(array $wordList, int $currentWordPosition): array
     {
         $precedingWordList =[];
 
@@ -166,7 +167,7 @@ class Analyzer
         Positive values are positive valence, negative value are negative
         valence.
     */
-    public function getSentiment($text)
+    public function getSentiment(string $text): array
     {
 
         $text_no_emoji = '';
@@ -191,7 +192,7 @@ class Analyzer
         $this->current_sentitext = new SentiText($text);
 
         $sentiments = [];
-        $words_and_emoticons = $this->current_sentitext->words_and_emoticons;
+        $words_and_emoticons = $this->current_sentitext->getWordsAndEmoticons();
 
         for ($i=0; $i<=count($words_and_emoticons)-1; $i++) {
             $valence = 0.0;
@@ -223,22 +224,92 @@ class Analyzer
     }
 
 
-    private function str_split_unicode($str, $l = 0) {
-        if ($l > 0) {
-            $ret = array();
-            $len = mb_strlen($str, "UTF-8");
-            for ($i = 0; $i < $len; $i += $l) {
-                $ret[] = mb_substr($str, $i, $l, "UTF-8");
-            }
-            return $ret;
+    /**
+     * Analyze one piece of text.
+     *
+     * Delegates to getSentiment(), so scores are identical to the legacy method
+     * by construction — enforced across the whole characterization corpus by
+     * CharacterizationTest::testAnalyzeAgreesWithGetSentimentAcrossTheBaseline().
+     */
+    public function analyze(string $text): SentimentResult
+    {
+        return SentimentResult::fromScores($this->getSentiment($text));
+    }
+
+    /**
+     * Analyze many texts at once.
+     *
+     * Input keys are preserved so callers can correlate results with their
+     * source rows.
+     *
+     * @param iterable<array-key, string> $texts
+     * @return array<array-key, SentimentResult>
+     */
+    public function analyzeMany(iterable $texts): array
+    {
+        $results = [];
+
+        foreach ($texts as $key => $text) {
+            $results[$key] = $this->analyze($text);
         }
+
+        return $results;
+    }
+
+    /**
+     * Return a NEW analyzer with the given terms applied over the lexicon.
+     *
+     * Immutable: the receiver is untouched. Cloning rather than constructing
+     * avoids re-parsing ~11,000 lines of lexicon files, and PHP arrays are
+     * copy-on-write so the copy is cheap.
+     *
+     * Custom terms override defaults; across calls, last write wins.
+     *
+     * Unlike the legacy updateLexicon(), this rejects bad input instead of
+     * silently coercing it.
+     *
+     * @param array<string, float|int|string> $terms
+     * @throws InvalidLexiconTermException
+     */
+    public function withLexicon(array $terms): static
+    {
+        $clone = clone $this;
+
+        foreach ($terms as $term => $valence) {
+            $term = (string) $term;
+
+            if (preg_match('/\s/u', $term) === 1) {
+                throw InvalidLexiconTermException::multiWord($term);
+            }
+
+            if (!is_numeric($valence)) {
+                throw InvalidLexiconTermException::nonNumeric($term, $valence);
+            }
+
+            $clone->lexicon[strtolower($term)] = (float) $valence;
+        }
+
+        return $clone;
+    }
+
+    /**
+     * $current_sentitext is transient per-call state; a clone must not share it.
+     */
+    public function __clone(): void
+    {
+        $this->current_sentitext = null;
+    }
+
+    /** @return array<int, string> */
+    private function str_split_unicode(string $str): array
+    {
         return preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY);
     }
 
 
     private function applyValenceCapsBoost($targetWord, $valence)
     {
-        if ($this->IsUpperCaseWord($targetWord) && $this->current_sentitext->is_cap_diff) {
+        if ($this->IsUpperCaseWord($targetWord) && $this->current_sentitext->isCapDifferential()) {
             if ($valence > 0) {
                 $valence += Config::C_INCR;
             } else {
@@ -332,7 +403,7 @@ class Analyzer
         return $valence;
     }
 
-    public function _least_check($wordInContext, $valence)
+    private function _least_check($wordInContext, $valence)
     {
         // check for negation case using "least"
         //if the previous word is least"
@@ -346,7 +417,7 @@ class Analyzer
         return $valence;
     }
 
-    public function _but_check($words_and_emoticons, $sentiments)
+    private function _but_check(array $words_and_emoticons, array $sentiments): array
     {
         // check for modification in sentiment due to contrastive conjunction 'but'
         $bi = array_search("but", $words_and_emoticons);
@@ -366,7 +437,7 @@ class Analyzer
         return $sentiments;
     }
 
-    public function _idioms_check($wordInContext, $valence)
+    private function _idioms_check($wordInContext, $valence)
     {
         $onezero = sprintf("%s %s", $wordInContext[2], $wordInContext[3]);
 
@@ -416,7 +487,7 @@ class Analyzer
         return $valence;
     }
 
-    public function _never_check($wordInContext, $valance)
+    private function _never_check($wordInContext, $valance)
     {
         //If the sentiment word is preceded by never so/this we apply a modifier
         $neverModifier = 0;
@@ -444,25 +515,8 @@ class Analyzer
         return $valance;
     }
 
-    public function _sentiment_laden_idioms_check($valence, $senti_text_lower){
-        # Future Work
-        # check for sentiment laden idioms that don't contain a lexicon word
-        $idioms_valences = [];
-        foreach (Config::SENTIMENT_LADEN_IDIOMS as $idiom) {
-             if(in_array($idiom, $senti_text_lower)){
-                //print($idiom, $senti_text_lower)
-                $valence = Config::SENTIMENT_LADEN_IDIOMS[$idiom];
-                $idioms_valences[] = $valence;
-            }
-        }
 
-        if ((strlen($idioms_valences) > 0)) {
-            $valence = ( array_sum( explode( ',', $idioms_valences ) ) / floatval(strlen($idioms_valences)));
-        }
-        return $valence;
-    }
-
-    public function _punctuation_emphasis($sum_s, $text)
+    private function _punctuation_emphasis($sum_s, string $text): float
     {
         // add emphasis from exclamation points and question marks
         $ep_amplifier = $this->_amplify_ep($text);
@@ -472,7 +526,7 @@ class Analyzer
         return $punct_emph_amplifier;
     }
 
-    public function _amplify_ep($text)
+    private function _amplify_ep(string $text): float
     {
         // check for added emphasis resulting from exclamation points (up to 4 of them)
         $ep_count = substr_count($text, "!");
@@ -486,7 +540,7 @@ class Analyzer
         return $ep_amplifier;
     }
 
-    public function _amplify_qm($text)
+    private function _amplify_qm(string $text): float
     {
         # check for added emphasis resulting from question marks (2 or 3+)
         $qm_count = substr_count($text, "?");
@@ -504,7 +558,7 @@ class Analyzer
         return $qm_amplifier;
     }
 
-    public function _sift_sentiment_scores($sentiments)
+    private function _sift_sentiment_scores(array $sentiments): array
     {
         # want separate positive versus negative sentiment scores
         $pos_sum = 0.0;
@@ -525,7 +579,7 @@ class Analyzer
         return [$pos_sum, $neg_sum, $neu_count];
     }
 
-    public function score_valence($sentiments, $text)
+    private function score_valence(array $sentiments, string $text): array
     {
         if ($sentiments) {
             $sum_s = array_sum($sentiments);

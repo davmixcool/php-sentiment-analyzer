@@ -4,20 +4,26 @@ namespace Sentiment\Procedures;
 
 /*
     Identify sentiment-relevant string-level properties of input text.
+
+    @internal This class is an implementation detail of Analyzer and is not
+    covered by the package's backward-compatibility guarantees.
 */
 
 class SentiText
 {
 
-    private $text = "";
-    public $words_and_emoticons = null;
-    public $is_cap_diff = null;
+    private string $text = "";
+
+    /** @var array<int, string> */
+    private array $words_and_emoticons = [];
+
+    private bool $is_cap_diff = false;
 
     const PUNC_LIST = [".", "!", "?", ",", ";", ":", "-", "'", "\"",
              "!!", "!!!", "??", "???", "?!?", "!?!", "?!?!", "!?!?"];
 
 
-    function __construct($text)
+    public function __construct(string $text)
     {
         //checking that is string
         //if (!isinstance(text, str)){
@@ -30,16 +36,27 @@ class SentiText
         $this->is_cap_diff = $this->allcap_differential($this->words_and_emoticons);
     }
 
+    /** @return array<int, string> */
+    public function getWordsAndEmoticons(): array
+    {
+        return $this->words_and_emoticons;
+    }
+
+    public function isCapDifferential(): bool
+    {
+        return $this->is_cap_diff;
+    }
+
     /*
         Remove all punctation from a string
     */
-    function strip_punctuation($string)
+    public function strip_punctuation(string $string): string
     {
         //$string = strtolower($string);
         return preg_replace("/[[:punct:]]+/", "", $string);
     }
 
-    function array_count_values_of($haystack, $needle)
+    public function array_count_values_of(array $haystack, string $needle): int
     {
         if (!in_array($needle, $haystack, true)) {
             return 0;
@@ -54,7 +71,7 @@ class SentiText
         :param list words: The words to inspect
         :returns: `True` if some but not all items in `words` are ALL CAPS
     */
-    private function allcap_differential($words)
+    private function allcap_differential(array $words): bool
     {
 
         $is_different = false;
@@ -72,7 +89,7 @@ class SentiText
         return $is_different;
     }
 
-    function _words_only()
+    public function _words_only(): array
     {
         $text_mod = $this->strip_punctuation($this->text);
         // removes punctuation (but loses emoticons & contractions)
@@ -84,7 +101,7 @@ class SentiText
         return $words_only;
     }
 
-    function _words_and_emoticons()
+    public function _words_and_emoticons(): array
     {
 
         $wes = preg_split('/\s+/', $this->text);
