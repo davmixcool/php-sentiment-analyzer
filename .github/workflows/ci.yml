@@ -1,13 +1,13 @@
 name: CI
 
 on:
-  # 1.x is the maintenance line for PHP < 8.1 users and must stay covered:
-  # security backports land there as PRs and are verified against the same
-  # characterization baseline as master.
+  # master is the v2 line; 1.x is the maintenance line for PHP < 8.1 users and
+  # must stay covered — security backports land there as PRs and are verified
+  # against the same characterization baseline as master.
   push:
-    branches: [ master, '1.x', '2.x', 'milestone-*' ]
+    branches: [ master, '1.x' ]
   pull_request:
-    branches: [ master, '1.x', '2.x' ]
+    branches: [ master, '1.x' ]
 
 jobs:
   tests:
