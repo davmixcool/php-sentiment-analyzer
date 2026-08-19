@@ -2,7 +2,7 @@
 
 PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that is used to understand sentiments in a sentence using VADER \(Valence Aware Dictionary and sentiment Reasoner\).
 
-[![GitHub license](https://img.shields.io/github/license/davmixcool/php-sentiment-analyzer.svg)](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/davmixcool/php-sentiment-analyzer.svg)](https://github.com/davmixcool/php-sentiment-analyzer/issues) [![Stable](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/v/stable.svg)](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/v/stable.svg) [![Download](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/d/total.svg)](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/d/total.svg) [![Twitter](https://img.shields.io/twitter/url/https/github.com/davmixcool/php-sentiment-analyzer.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fdavmixcool%2Fphp-sentiment-analyzer)
+[![GitHub license](https://img.shields.io/github/license/davmixcool/php-sentiment-analyzer.svg)](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/LICENCE.txt) [![GitHub issues](https://img.shields.io/github/issues/davmixcool/php-sentiment-analyzer.svg)](https://github.com/davmixcool/php-sentiment-analyzer/issues) [![Stable](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/v/stable.svg)](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/v/stable.svg) [![Download](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/d/total.svg)](https://poser.pugx.org/davmixcool/php-sentiment-analyzer/d/total.svg) [![Twitter](https://img.shields.io/twitter/url/https/github.com/davmixcool/php-sentiment-analyzer.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fdavmixcool%2Fphp-sentiment-analyzer)
 
 ## Features
 
@@ -210,7 +210,13 @@ affected text after upgrading. Full details in the
 
 ### License
 
-This package is licensed under the [MIT license](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/LICENSE).
+The package's source code is licensed under the
+[MIT license](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/LICENCE.txt).
+
+The bundled sentiment and emoji lexicons in `src/Lexicons/` are **third-party
+data**, redistributed from [cjhutto/vaderSentiment](https://github.com/cjhutto/vaderSentiment)
+under its own MIT license (Copyright (c) 2016 C.J. Hutto). Full attribution and
+license text are in [NOTICE.md](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/NOTICE.md).
 
 ### Reference
 

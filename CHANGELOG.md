@@ -57,6 +57,16 @@ legacy array uses `pos`/`neg`/`neu` — see `MIGRATION.md`.
   `Config`.
 - PHPStan at level 5, wired into CI.
 - `MIGRATION.md`.
+- `NOTICE.md` and `src/Lexicons/README.md` — attribution and full MIT license
+  text for the bundled VADER sentiment and emoji lexicons, which are
+  third-party data from [cjhutto/vaderSentiment](https://github.com/cjhutto/vaderSentiment)
+  (Copyright (c) 2016 C.J. Hutto). Both ship in the release tarball, as the
+  license requires. The data itself is unchanged.
+
+### Fixed — documentation
+
+- The README's MIT license links pointed at `/blob/master/LICENSE`, which 404s;
+  the file is `LICENCE.txt`.
 
 ## [1.3.0] - 2026-08-19
 
