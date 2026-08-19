@@ -21,6 +21,7 @@ PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that 
 ## Contents
 
 * [Install](#install)
+* [Modern API](#modern-api)
 * [Simple Usage](#simple-usage)
 * [Advanced Usage](#advanced-usage)
 * [Upgrading](#upgrading)
@@ -44,6 +45,57 @@ Run the following to include this via Composer
 ```text
 composer require davmixcool/php-sentiment-analyzer
 ```
+
+### Modern API
+
+Available from 2.0. Returns an immutable result object instead of a bare array.
+
+```php
+use Sentiment\Analyzer;
+
+$analyzer = new Analyzer();
+$result   = $analyzer->analyze('This update is really good!');
+
+$result->compound();    // 0.5355
+$result->label();       // 'positive'
+$result->isPositive();  // true
+$result->positive();    // 0.463
+$result->toArray();     // ['positive' => 0.463, 'negative' => 0.0, 'neutral' => 0.537, 'compound' => 0.5355, 'label' => 'positive']
+```
+
+Labels follow the VADER convention and are exposed as constants, so you can
+reclassify without hardcoding: `compound >= 0.05` is positive, `<= -0.05` is
+negative, and anything between is neutral.
+
+**Batch analysis** preserves your input keys, so results line up with their
+source rows:
+
+```php
+$results = $analyzer->analyzeMany([
+    'ticket-1' => 'This update is really good!',
+    'ticket-2' => 'This product is terrible.',
+    'ticket-3' => 'It works fine.',
+]);
+
+$results['ticket-2']->label();     // 'negative'
+$results['ticket-2']->compound();  // -0.4767
+```
+
+**Custom lexicons** return a *new* analyzer — the original is untouched:
+
+```php
+$slang = $analyzer->withLexicon([
+    'slaps' => 2.2,
+    'mid'   => -1.7,
+]);
+
+$slang->analyze('that beat slaps')->compound();    //  0.4939
+$slang->analyze('the update is mid')->compound();  // -0.4019
+$analyzer->analyze('that beat slaps')->compound(); //  0.0 — unchanged
+```
+
+`withLexicon()` rejects multi-word terms and non-numeric values rather than
+coercing them. The older `updateLexicon()` below stays lenient and unchanged.
 
 ### Simple Usage
 

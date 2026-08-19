@@ -12,6 +12,24 @@ This project follows [Semantic Versioning](https://semver.org/).
 verified on PHP 8.1–8.4 in CI. This release modernizes the codebase; it does not
 touch the scoring path. See `MIGRATION.md`.
 
+### Added — new API
+
+- `Analyzer::analyze(string): SentimentResult` — an immutable result object with
+  `compound()`, `positive()`, `negative()`, `neutral()`, `label()`,
+  `isPositive()`/`isNegative()`/`isNeutral()` and `toArray()`.
+- `Analyzer::analyzeMany(iterable): SentimentResult[]` — preserves input keys.
+- `Analyzer::withLexicon(array): static` — immutable; returns a new analyzer.
+  Stricter than `updateLexicon()`: rejects multi-word terms and non-numeric
+  values instead of silently coercing or ignoring them.
+- `SentimentResult::POSITIVE_THRESHOLD` / `NEGATIVE_THRESHOLD` (±0.05, the VADER
+  convention) so callers can reclassify without hardcoding.
+
+`getSentiment()` is unaffected and returns the same array as always. Note that
+`SentimentResult::toArray()` uses `positive`/`negative`/`neutral` where the
+legacy array uses `pos`/`neg`/`neu` — see `MIGRATION.md`.
+
+`explain()` is not included; it is scheduled for 2.2.
+
 ### Changed — BREAKING
 
 - **PHP 8.1+ is now required** (`^8.1`). Users on older runtimes stay on `1.x`,
