@@ -1,0 +1,16 @@
+# Development material — excluded from release tarballs so that `composer
+# require` downloads only the library. All of it stays visible on GitHub.
+/.github/               export-ignore
+/tests/                 export-ignore
+/tools/                 export-ignore
+/phpunit.xml            export-ignore
+/.gitattributes         export-ignore
+/.gitignore             export-ignore
+/KNOWN-DIVERGENCES.md   export-ignore
+
+# Lexicon data is byte-sensitive. Scores are pinned to the exact contents of
+# these files (vader_sentiment_lexicon.txt even carries a UTF-8 BOM), and v2.0
+# guarantees byte-identical output against that baseline. Opt them out of any
+# line-ending normalisation so a future `* text=auto` cannot silently shift
+# every score in the package.
+/src/Lexicons/*.txt     -text
