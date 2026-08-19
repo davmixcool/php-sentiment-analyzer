@@ -40,6 +40,50 @@ $analyzer->updateLexicon(['rubbish' => -1.5]); // same lowercasing, same coercio
 - The constructor keeps resolving lexicon paths relative to the package's `src/`
   directory.
 
+## 2b. The new API (optional)
+
+Nothing below is required. `getSentiment()` keeps working exactly as before; the
+new API is opt-in and layered over it, returning the same numbers.
+
+```php
+$result = $analyzer->analyze('This update is really good!');
+
+$result->compound();    // 0.6892
+$result->label();       // 'positive'
+$result->isPositive();  // true
+$result->toArray();     // ['positive' => …, 'negative' => …, 'neutral' => …, 'compound' => …, 'label' => …]
+```
+
+**`toArray()` keys differ from `getSentiment()` on purpose.** The legacy shape
+(`neg`/`neu`/`pos`) is frozen and cannot be renamed; the new one spells the words
+out. Do not mix them up — `SentimentResult` does not implement `ArrayAccess`, so
+the two can never be swapped silently.
+
+Labels use the VADER convention, exposed as constants:
+`compound >= 0.05` is positive, `<= -0.05` negative, neutral between.
+
+```php
+$results = $analyzer->analyzeMany(['a' => 'great', 'b' => 'awful']); // keys preserved
+
+$custom = $analyzer->withLexicon(['slaps' => 2.2]);  // returns a NEW analyzer
+```
+
+`withLexicon()` is **immutable** — assign the return value; the original is
+unchanged. It is also stricter than the legacy `updateLexicon()`, which stays
+lenient:
+
+| Input | `updateLexicon()` (legacy) | `withLexicon()` (new) |
+|---|---|---|
+| `['good' => 'abc']` | coerced to `0` | throws `InvalidLexiconTermException` |
+| `['cut the mustard' => 3]` | silently does nothing | throws `InvalidLexiconTermException` |
+| `['GOOD' => 1.5]` | lowercased | lowercased |
+
+Multi-word terms are rejected rather than routed into the idiom table, because
+that matcher has known defects (`KNOWN-DIVERGENCES.md` §2) and would apply them
+only in some positions. A clear error beats a feature that works sometimes.
+
+`explain()` is not in 2.0 — it is scheduled for 2.2.
+
 ## 3. Accepted breaks
 
 ### 3.1 Internal methods are now private

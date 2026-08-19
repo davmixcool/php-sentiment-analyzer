@@ -4,6 +4,7 @@ namespace Sentiment;
 
 use Sentiment\Config\Config;
 use Sentiment\Exceptions\InvalidLexiconException;
+use Sentiment\Exceptions\InvalidLexiconTermException;
 use Sentiment\Procedures\SentiText;
 
 /*
@@ -222,6 +223,82 @@ class Analyzer
         return $this->score_valence($sentiments, $text);
     }
 
+
+    /**
+     * Analyze one piece of text.
+     *
+     * Delegates to getSentiment(), so scores are identical to the legacy method
+     * by construction — enforced across the whole characterization corpus by
+     * CharacterizationTest::testAnalyzeAgreesWithGetSentimentAcrossTheBaseline().
+     */
+    public function analyze(string $text): SentimentResult
+    {
+        return SentimentResult::fromScores($this->getSentiment($text));
+    }
+
+    /**
+     * Analyze many texts at once.
+     *
+     * Input keys are preserved so callers can correlate results with their
+     * source rows.
+     *
+     * @param iterable<array-key, string> $texts
+     * @return array<array-key, SentimentResult>
+     */
+    public function analyzeMany(iterable $texts): array
+    {
+        $results = [];
+
+        foreach ($texts as $key => $text) {
+            $results[$key] = $this->analyze($text);
+        }
+
+        return $results;
+    }
+
+    /**
+     * Return a NEW analyzer with the given terms applied over the lexicon.
+     *
+     * Immutable: the receiver is untouched. Cloning rather than constructing
+     * avoids re-parsing ~11,000 lines of lexicon files, and PHP arrays are
+     * copy-on-write so the copy is cheap.
+     *
+     * Custom terms override defaults; across calls, last write wins.
+     *
+     * Unlike the legacy updateLexicon(), this rejects bad input instead of
+     * silently coercing it.
+     *
+     * @param array<string, float|int|string> $terms
+     * @throws InvalidLexiconTermException
+     */
+    public function withLexicon(array $terms): static
+    {
+        $clone = clone $this;
+
+        foreach ($terms as $term => $valence) {
+            $term = (string) $term;
+
+            if (preg_match('/\s/u', $term) === 1) {
+                throw InvalidLexiconTermException::multiWord($term);
+            }
+
+            if (!is_numeric($valence)) {
+                throw InvalidLexiconTermException::nonNumeric($term, $valence);
+            }
+
+            $clone->lexicon[strtolower($term)] = (float) $valence;
+        }
+
+        return $clone;
+    }
+
+    /**
+     * $current_sentitext is transient per-call state; a clone must not share it.
+     */
+    public function __clone(): void
+    {
+        $this->current_sentitext = null;
+    }
 
     /** @return array<int, string> */
     private function str_split_unicode(string $str): array

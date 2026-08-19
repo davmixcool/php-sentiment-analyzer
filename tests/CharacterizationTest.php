@@ -87,6 +87,42 @@ final class CharacterizationTest extends TestCase
         );
     }
 
+    /**
+     * The new API must never drift from the scoring contract.
+     *
+     * Rather than duplicating 355 fixture cases, assert that analyze() agrees
+     * with the pinned values everywhere. If analyze() ever stops delegating to
+     * getSentiment(), this fails against the same golden master.
+     */
+    #[DataProvider('provideCases')]
+    public function testAnalyzeAgreesWithGetSentimentAcrossTheBaseline(string $key, array $case): void
+    {
+        if (isset($case['lexicon'])) {
+            $analyzer = new Analyzer();
+            $analyzer->updateLexicon($case['lexicon']);
+        } else {
+            $analyzer = self::sharedAnalyzer();
+        }
+
+        $result = $analyzer->analyze($case['text']);
+
+        $actual = [
+            'neg' => sprintf('%.3f', $result->negative()),
+            'neu' => sprintf('%.3f', $result->neutral()),
+            'pos' => sprintf('%.3f', $result->positive()),
+            'compound' => sprintf('%.4f', $result->compound()),
+        ];
+
+        $expected = [
+            'neg' => $case['neg'],
+            'neu' => $case['neu'],
+            'pos' => $case['pos'],
+            'compound' => $case['compound'],
+        ];
+
+        $this->assertSame($expected, $actual, sprintf('analyze() drifted on "%s"', $key));
+    }
+
     public function testBaselineCoversEveryRuleTableEntry(): void
     {
         $keys = array_keys(self::provideCases());
