@@ -14,14 +14,21 @@ PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that 
 
 * PHP 5.5 and above
 
-## Steps:
+## Contents
 
-* [Install](./#install)
-* [Usage](./#usage)
-* [Stargazers](./#stargazers)
-* [Forkers](./#forkers)
-* [License](./#license)
-* [Reference](./#reference)
+* [Install](#install)
+* [Simple Usage](#simple-usage)
+* [Advanced Usage](#advanced-usage)
+* [Upgrading](#upgrading)
+* [Stargazers](#stargazers)
+* [Forkers](#forkers)
+* [License](#license)
+* [Reference](#reference)
+
+## Documentation
+
+* [Changelog](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/CHANGELOG.md) — release history, including scoring changes
+* [Known divergences](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/KNOWN-DIVERGENCES.md) — behaviour that differs from reference VADER, documented and pinned by the test suite
 
 ### Install
 
@@ -117,6 +124,24 @@ Marie was enthusiastic about the upcoming trip. Her brother was also passionate 
 
 String: To be or not to be?  ------------- {"neg":0,"neu":1,"pos":0,"compound":0}
 ```
+
+### Upgrading
+
+**1.3.0 changes scores for some text.** `_never_check()` previously zeroed the
+sentiment of any word within two tokens of "so" or "this", so ordinary phrasing
+returned neutral. That is fixed:
+
+| Input | Before | After |
+| --- | --- | --- |
+| `this is good` | 0.0000 | +0.4404 |
+| `this is bad` | 0.0000 | -0.5423 |
+| `so good` | 0.0000 | +0.4877 |
+
+The genuine "never" behaviour is unchanged: `never so good` still scores -0.2385.
+
+If you store sentiment scores or compare them against thresholds, re-score any
+affected text after upgrading. Full details in the
+[changelog](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/CHANGELOG.md).
 
 ### Stargazers
 
