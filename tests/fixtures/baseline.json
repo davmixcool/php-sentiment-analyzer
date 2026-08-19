@@ -380,9 +380,9 @@
     "booster/so": {
         "text": "so good",
         "neg": "0.000",
-        "neu": "1.000",
-        "pos": "0.000",
-        "compound": "0.0000"
+        "neu": "0.240",
+        "pos": "0.760",
+        "compound": "0.4877"
     },
     "booster/somewhat": {
         "text": "somewhat good",
@@ -569,9 +569,9 @@
     "caps/mixed_sentence": {
         "text": "this is GOOD",
         "neg": "0.000",
-        "neu": "1.000",
-        "pos": "0.000",
-        "compound": "0.0000"
+        "neu": "0.355",
+        "pos": "0.645",
+        "compound": "0.5622"
     },
     "caps/negated_lower": {
         "text": "not good",
@@ -1090,16 +1090,16 @@
     "emoji_sentence/🖐️": {
         "text": "this is 🖐️ really",
         "neg": "0.000",
-        "neu": "1.000",
-        "pos": "0.000",
-        "compound": "0.0000"
+        "neu": "0.652",
+        "pos": "0.348",
+        "compound": "0.4939"
     },
     "emoji_sentence/😀": {
         "text": "this is 😀 really",
         "neg": "0.000",
-        "neu": "1.000",
-        "pos": "0.000",
-        "compound": "0.0000"
+        "neu": "0.615",
+        "pos": "0.385",
+        "compound": "0.3612"
     },
     "emoji_sentence/🙅": {
         "text": "this is 🙅 really",
@@ -2315,9 +2315,9 @@
     "never_check/so_good": {
         "text": "so good",
         "neg": "0.000",
-        "neu": "1.000",
-        "pos": "0.000",
-        "compound": "0.0000"
+        "neu": "0.240",
+        "pos": "0.760",
+        "compound": "0.4877"
     },
     "never_check/so_is_good": {
         "text": "so it is good",
@@ -2343,23 +2343,23 @@
     "never_check/this_good": {
         "text": "this good",
         "neg": "0.000",
-        "neu": "1.000",
-        "pos": "0.000",
-        "compound": "0.0000"
+        "neu": "0.256",
+        "pos": "0.744",
+        "compound": "0.4404"
     },
     "never_check/this_is_bad": {
         "text": "this is bad",
-        "neg": "0.000",
-        "neu": "1.000",
+        "neg": "0.636",
+        "neu": "0.364",
         "pos": "0.000",
-        "compound": "0.0000"
+        "compound": "-0.5423"
     },
     "never_check/this_is_good": {
         "text": "this is good",
         "neg": "0.000",
-        "neu": "1.000",
-        "pos": "0.000",
-        "compound": "0.0000"
+        "neu": "0.408",
+        "pos": "0.592",
+        "compound": "0.4404"
     },
     "punctuation/bare": {
         "text": "good",

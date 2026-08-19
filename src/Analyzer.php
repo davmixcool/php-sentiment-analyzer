@@ -425,7 +425,12 @@ class Analyzer
         } else if ("never" == $wordInContext[1]) {
             $neverModifier = 1.5;
         }
-        if ("so" == $wordInContext[1] || "so"== $wordInContext[2] || "this" == $wordInContext[1] || "this" == $wordInContext[2]) {
+        //Only apply the so/this modifier when "never" was actually found. Without
+        //this guard $neverModifier stays 0 and the multiplication silently zeroes
+        //the valence of any sentiment word within two tokens of "so" or "this",
+        //so phrases like "this is good" and "so good" scored neutral.
+        if ($neverModifier != 0
+            && ("so" == $wordInContext[1] || "so"== $wordInContext[2] || "this" == $wordInContext[1] || "this" == $wordInContext[2])) {
             $valance *= $neverModifier;
         }
 

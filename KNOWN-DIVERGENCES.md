@@ -4,8 +4,12 @@ Behaviour that is **pinned in `tests/fixtures/baseline.json` because it is what
 the code currently does — not because it is correct.**
 
 v2.0 guarantees byte-identical scores with v1 (see the Scoring Parity section of
-the v2 PRD). Everything below is therefore reproduced exactly in v2.0 and fixed
-in a later minor release, each with a `CHANGELOG.md` entry.
+the v2 PRD). Everything still listed as outstanding below is therefore
+reproduced exactly in v2.0 and fixed in a later release, each with a
+`CHANGELOG.md` entry.
+
+Items marked FIXED were corrected deliberately, with their pinned cases re-based
+in the same commit and the movement documented here.
 
 **Do not "fix" any of these while making the characterization suite pass.** A
 failing case here means a score moved, which is a regression during v2.0 — even
@@ -15,46 +19,34 @@ This file is the worklist for the post-2.0 scoring-fix release.
 
 ---
 
-## 1. `_never_check` zeroes sentiment after "so" or "this"
+## 1. `_never_check` zeroed sentiment after "so" or "this" — FIXED in 1.3.0
 
-**Impact: high.** Affects everyday phrasing.
+`Analyzer::_never_check()` initialised `$neverModifier` to `0` and then applied
+it whenever `"so"` or `"this"` appeared within two tokens of a sentiment word,
+**regardless of whether `"never"` was present** — multiplying the valence by
+zero and silently destroying it.
 
-`Analyzer::_never_check()` (`src/Analyzer.php:419`) initialises `$neverModifier`
-to `0`, then applies it whenever `"so"` or `"this"` appears within two tokens of
-a sentiment word — **regardless of whether `"never"` is present**:
+Fixed by guarding the branch on `$neverModifier != 0`. Reference VADER applies
+the 1.25/1.5 boost only when `"never"` is present, which is now the behaviour.
 
-```php
-$neverModifier = 0;
-if ("never" == $wordInContext[0]) { $neverModifier = 1.25; }
-else if ("never" == $wordInContext[1]) { $neverModifier = 1.5; }
+Eight pinned cases moved, every one from `0.0000` to a sensible value:
 
-if ("so" == $wordInContext[1] || "so" == $wordInContext[2]
- || "this" == $wordInContext[1] || "this" == $wordInContext[2]) {
-    $valance *= $neverModifier;   // multiplies by 0 when "never" is absent
-}
-```
-
-Reference VADER applies the 1.25/1.5 boost only when `"never"` is present. Here
-the multiplication runs unconditionally, so the valence is silently destroyed.
-
-| Input | Pinned | Expected |
+| Case | Before | After |
 |---|---|---|
-| `good` (control) | `0.4404` | `0.4404` |
-| `this good` | `0.0000` | ~`0.4404` |
-| `this is good` | `0.0000` | ~`0.4404` |
-| `this is bad` | `0.0000` | ~negative |
-| `so good` | `0.0000` | ~`0.4404` |
-| `it is good` (control) | `0.4404` | `0.4404` |
-| `that is good` (control) | `0.4404` | `0.4404` |
+| `never_check/this_is_good` (`this is good`) | 0.0000 | +0.4404 |
+| `never_check/this_good` (`this good`) | 0.0000 | +0.4404 |
+| `never_check/this_is_bad` (`this is bad`) | 0.0000 | -0.5423 |
+| `never_check/so_good` (`so good`) | 0.0000 | +0.4877 |
+| `booster/so` (`so good`) | 0.0000 | +0.4877 |
+| `caps/mixed_sentence` (`this is GOOD`) | 0.0000 | +0.5622 |
+| `emoji_sentence/😀` (`this is 😀 really`) | 0.0000 | +0.3612 |
+| `emoji_sentence/🖐️` (`this is 🖐️ really`) | 0.0000 | +0.4939 |
 
-Only the two-token context window is affected — `this cake looks amazing`
-scores `0.5859` correctly because `this` is four tokens from `amazing`.
+The genuine "never" paths were unaffected: `never so good` and `never this good`
+still score -0.2385 and -0.2108. No other pinned case moved.
 
-Corpus section: `never_check/*`.
-
-**Suggested fix:** guard the `so`/`this` branch on `$neverModifier !== 0`.
-
----
+**This is the one deliberate scoring change in the 1.x line.** Everything below
+remains pinned as-is.
 
 ## 2. 15 of 21 idioms do not fire
 
