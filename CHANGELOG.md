@@ -4,6 +4,42 @@ All notable changes to this project are documented here.
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [2.0.0] - unreleased
+
+### Scores are unchanged
+
+**2.0.0 produces byte-identical scores to 1.3.0** across all 355 pinned cases,
+verified on PHP 8.1–8.4 in CI. This release modernizes the codebase; it does not
+touch the scoring path. See `MIGRATION.md`.
+
+### Changed — BREAKING
+
+- **PHP 8.1+ is now required** (`^8.1`). Users on older runtimes stay on `1.x`,
+  which remains supported.
+- Twelve internal methods are now `private`: `IsNegated`, `make_lex_dict`,
+  `make_emoji_dict`, `score_valence`, `_least_check`, `_but_check`,
+  `_idioms_check`, `_never_check`, `_punctuation_emphasis`, `_amplify_ep`,
+  `_amplify_qm`, `_sift_sentiment_scores`.
+- `SentiText` is `@internal`; its public properties are now private with
+  `getWordsAndEmoticons()` / `isCapDifferential()` accessors.
+- A missing lexicon file throws `Sentiment\Exceptions\InvalidLexiconException`
+  instead of calling `die()`.
+- Removed `_sentiment_laden_idioms_check()`, which was public and never called.
+  No behavioural change — it is why `SENTIMENT_LADEN_IDIOMS` never fired.
+
+### Fixed
+
+- Dynamic property creation (`$emoji_lexicon`, `$emojis`), deprecated since PHP
+  8.2, now declared. The package emits no deprecation notices, enforced by
+  `failOnDeprecation="true"`.
+
+### Added
+
+- Full parameter, return and property types across `Analyzer`, `SentiText` and
+  `Config`.
+- PHPStan at level 5, wired into CI.
+- `MIGRATION.md`.
+
 ## [1.3.0] - 2026-08-19
 
 ### Fixed

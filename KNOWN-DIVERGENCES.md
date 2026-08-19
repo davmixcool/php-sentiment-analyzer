@@ -85,24 +85,20 @@ they cannot work until the idiom matcher does.
 
 ---
 
-## 3. Dynamic property deprecations (PHP 8.2+)
+## 3. Dynamic property deprecations (PHP 8.2+) — FIXED in 2.0.0
 
-`Analyzer::__construct()` assigns `$this->emoji_lexicon` and `$this->emojis`
-without declaring them (`src/Analyzer.php:25` and `:27`). Deprecated since PHP
-8.2; two notices fire on every instantiation.
+`Analyzer::__construct()` assigned `$this->emoji_lexicon` and `$this->emojis`
+without declaring them (`src/Analyzer.php`). Deprecated since PHP 8.2; two
+notices fired on every instantiation. PHP 8.1 emitted nothing, as dynamic
+properties were not deprecated there.
 
-**PHP 8.1 emits nothing** — dynamic properties are not deprecated there. The
-suite therefore reports 368 passing on 8.2–8.4 and 367 passing plus 1 skipped on
-8.1, which is expected, not a gap.
+Both are now declared and typed. `phpunit.xml` sets `failOnDeprecation="true"`,
+so any new deprecation fails the build, and the
+`testKnownDynamicPropertyDeprecationsStillPresent()` tripwire has been removed —
+it had done its job.
 
-`phpunit.xml` therefore sets `failOnDeprecation="false"`.
-
-**Scheduled for v2.0**, where declaring the properties is part of the
-modernization. `ApiContractTest::testKnownDynamicPropertyDeprecationsStillPresent()`
-fails once they are declared — that failure is the signal to flip
-`failOnDeprecation` to `true` and delete the test.
-
----
+Fixed on the `2.x` line only. The `1.x` maintenance line still emits these
+notices on PHP 8.2+, which is expected: it exists to support PHP < 8.1.
 
 ## 4. VADER lexicon file carries a UTF-8 BOM
 

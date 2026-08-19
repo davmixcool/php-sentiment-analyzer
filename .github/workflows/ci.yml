@@ -38,6 +38,9 @@ jobs:
       - name: Run characterization suite
         run: composer test
 
+      - name: Static analysis
+        run: composer stan
+
       # The baseline must be reproducible: regenerating it on a clean checkout
       # must produce no diff. A diff here means scoring is not deterministic
       # across PHP versions, which would invalidate the v2.0 parity guarantee.

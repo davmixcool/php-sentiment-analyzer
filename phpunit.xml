@@ -9,12 +9,11 @@
          displayDetailsOnTestsThatTriggerDeprecations="true"
          failOnWarning="true"
          failOnNotice="true"
-         failOnDeprecation="false">
+         failOnDeprecation="true">
     <!--
-        failOnDeprecation is false ONLY because v1 creates dynamic properties
-        ($emoji_lexicon, $emojis in src/Analyzer.php), deprecated since PHP 8.2.
-        These are catalogued in KNOWN-DIVERGENCES.md and fixed in v2.0.
-        Flip this to "true" as part of v2.0 — it is a Definition of Done gate.
+        Enforced from v2.0: the dynamic properties that caused deprecation
+        notices on PHP 8.2+ are now declared, so any new deprecation is a
+        regression and fails the build.
     -->
     <testsuites>
         <testsuite name="Characterization">

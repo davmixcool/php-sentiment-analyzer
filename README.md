@@ -12,7 +12,11 @@ PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that 
 
 ## Requirements
 
-* PHP 5.5 and above
+* PHP 8.1 and above
+
+> Using PHP below 8.1? Install the `1.x` line instead — it is maintained and
+> produces the same scores:
+> `composer require davmixcool/php-sentiment-analyzer:^1.3`
 
 ## Contents
 
@@ -28,6 +32,7 @@ PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that 
 ## Documentation
 
 * [Changelog](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/CHANGELOG.md) — release history, including scoring changes
+* [Migrating from 1.x to 2.0](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/MIGRATION.md) — breaking changes, and why your scores do not move
 * [Known divergences](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/KNOWN-DIVERGENCES.md) — behaviour that differs from reference VADER, documented and pinned by the test suite
 
 ### Install
