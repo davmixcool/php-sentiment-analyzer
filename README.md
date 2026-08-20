@@ -10,44 +10,17 @@ PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool for P
 * Emoticon
 * Emoji
 
-## Relationship to VADER
-
-This package uses the **VADER sentiment lexicon verbatim** — the dictionary files
-in `src/Lexicons/` are byte-identical to
-[cjhutto/vaderSentiment](https://github.com/cjhutto/vaderSentiment), and lexicon
-and emoji lookups match the reference implementation exactly.
-
-**The rule engine is an independent port, and it is not score-equivalent with
-reference Python VADER.** Measured across a 336-case corpus, scores differ on
-**47% of cases**. The two largest causes are negation strength and the ordering
-of booster damping:
-
-| Input | This package | Python VADER |
-| --- | --- | --- |
-| `aint good` | -0.1423 | -0.3412 |
-| `very good` | 0.4877 | 0.4927 |
-| `I have never been so happy` | -0.2699 | 0.6948 |
-
-If you need results that match Python VADER exactly, this package will not give
-them to you today. If you need a self-contained, dependency-free, deterministic
-sentiment scorer for PHP, it does that well — and its behaviour is pinned by a
-355-case characterization suite, so it does not drift between releases.
-
-Run `composer conformance` to reproduce the comparison yourself. Full detail,
-including which rules diverge and why, is in
-[KNOWN-DIVERGENCES.md](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/KNOWN-DIVERGENCES.md).
-
 ## Requirements
 
 * PHP 5.5 and above
 
 ## Contents
 
-* [Relationship to VADER](#relationship-to-vader)
 * [Install](#install)
 * [Simple Usage](#simple-usage)
 * [Advanced Usage](#advanced-usage)
 * [Upgrading](#upgrading)
+* [Relationship to VADER](#relationship-to-vader)
 * [License](#license)
 * [Reference](#reference)
 
@@ -168,6 +141,53 @@ The genuine "never" behaviour is unchanged: `never so good` still scores -0.2385
 If you store sentiment scores or compare them against thresholds, re-score any
 affected text after upgrading. Full details in the
 [changelog](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/CHANGELOG.md).
+
+### Relationship to VADER
+
+This package uses the **VADER sentiment lexicon verbatim** — the dictionary files
+in `src/Lexicons/` are byte-identical to
+[cjhutto/vaderSentiment](https://github.com/cjhutto/vaderSentiment), and lexicon
+and emoji lookups match the reference implementation exactly.
+
+**The rule engine is an independent port, and it is not score-equivalent with
+reference Python VADER.** Measured across a 336-case corpus, scores differ on
+**47% of cases**. The two largest causes are negation strength and the ordering
+of booster damping:
+
+| Input | This package | Python VADER |
+| --- | --- | --- |
+| `aint good` | -0.1423 | -0.3412 |
+| `very good` | 0.4877 | 0.4927 |
+| `I have never been so happy` | -0.2699 | 0.6948 |
+
+If you need results that match Python VADER exactly, this package will not give
+them to you today. If you need a self-contained, dependency-free, deterministic
+sentiment scorer for PHP, it does that well — and its behaviour is pinned by a
+355-case characterization suite, so it does not drift between releases.
+
+Run `composer conformance` to reproduce the comparison yourself. Full detail,
+including which rules diverge and why, is in
+[KNOWN-DIVERGENCES.md](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/KNOWN-DIVERGENCES.md).
+
+### 3.0.0 resolves this
+
+The scoring engine was rewritten as a faithful port and now matches reference
+VADER exactly — verified by `composer conformance`, which fails CI on any
+divergence.
+
+Upgrading from 1.x crosses two boundaries at once:
+
+- **PHP 8.1+ is required** from 2.0 onward. If you are on an older runtime, this
+  1.x line remains maintained and is where you should stay.
+- **Your scores will change** — roughly 45% of cases move, most importantly
+  negation, which this line applies at about a third of its intended strength.
+
+```bash
+composer require davmixcool/php-sentiment-analyzer:^3.0
+```
+
+[MIGRATION.md](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/MIGRATION.md) covers both the 1.x → 2.0 API changes and
+the 2.x → 3.0 score changes.
 
 ### License
 
