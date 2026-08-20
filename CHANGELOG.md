@@ -4,6 +4,40 @@ All notable changes to this project are documented here.
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [2.0.1] - 2026-08-20
+
+### Scores are unchanged
+
+Documentation and tooling only. No source file was modified and every pinned
+score is byte-identical to 2.0.0. **No need to re-score stored text.**
+
+### Changed
+
+- **Corrected the package description.** It previously read "…using VADER
+  (Valence Aware Dictionary and sentiment Reasoner)", which implied score
+  equivalence with the reference Python implementation. Measurement shows scores
+  differ on 47% of a 336-case corpus, so the claim is now scoped to what is
+  provably true: the package is *built on the VADER sentiment lexicon*, which it
+  uses verbatim.
+
+### Added
+
+- **`composer conformance`** (`tools/conformance.sh`) — a three-way comparison of
+  this package's 1.x line, its 2.x line, and reference Python `vaderSentiment`,
+  reporting divergence per rule section. Informational; it does not gate CI.
+- A **"Relationship to VADER"** section in the README, and a new section 0 in
+  `KNOWN-DIVERGENCES.md` documenting the measured divergence and its causes —
+  chiefly negation being ~2.5x too weak and booster damping being applied in
+  reverse order.
+
+### Fixed — documentation
+
+- `KNOWN-DIVERGENCES.md` section 2 previously claimed "15 of 21 idioms do not
+  fire", measured against the idiom tables. That framing was incorrect: reference
+  VADER only consults idioms in specific positions, and `SENTIMENT_LADEN_IDIOMS`
+  is explicitly unimplemented upstream, so most of those cases were parity rather
+  than defects. Rewritten against reference behaviour.
+
 ## [2.0.0] - 2026-08-19
 
 ### Scores are unchanged
