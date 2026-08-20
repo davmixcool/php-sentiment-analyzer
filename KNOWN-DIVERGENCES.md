@@ -87,12 +87,26 @@ ordinary sentence:
 "I have never been so happy"    this package: -0.2699    reference: +0.6948
 ```
 
-### Status
+### Status — planned for 3.0.0
 
-**Not scheduled.** Correcting these would move roughly half of all scores, which
-is a major-version change for a package with a substantial install base. It is
-documented here, measurable via `composer conformance`, and deliberately left
-alone rather than fixed piecemeal.
+**These will be fixed.** Alignment with reference VADER is planned for the next
+major release.
+
+It has to be a major release: correcting negation and booster damping moves
+roughly half of all scores. It will not arrive in a patch or minor version. The
+release will carry a full before/after breakdown and an explicit re-score
+warning, as `1.3.0` did for a smaller change.
+
+They are also deliberately **not** being fixed piecemeal. These rules interact —
+an isolated idiom fix was attempted and made overall divergence worse (see
+section 2) — so alignment is a single coordinated change verified against the
+characterization corpus, not a series of patches.
+
+Progress is measurable: `composer conformance` reports divergence per rule
+section, so this is a number going to zero rather than a judgement call.
+
+If you would rather not move, the current behaviour remains available on the
+existing release lines, which stay maintained.
 
 ## 1. `_never_check` zeroed sentiment after "so" or "this" — FIXED in 1.3.0
 
