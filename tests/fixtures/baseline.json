@@ -2,492 +2,590 @@
     "booster/absolutely": {
         "text": "absolutely good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/almost": {
         "text": "almost good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/amazingly": {
         "text": "amazingly good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/awfully": {
         "text": "awfully good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/barely": {
         "text": "barely good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/completely": {
         "text": "completely good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
+    },
+    "booster/considerable": {
+        "text": "considerable good",
+        "neg": "0.000",
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/considerably": {
         "text": "considerably good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/decidedly": {
         "text": "decidedly good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/deeply": {
         "text": "deeply good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/effing": {
         "text": "effing good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/enormous": {
         "text": "enormous good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/enormously": {
         "text": "enormously good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/entirely": {
         "text": "entirely good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/especially": {
         "text": "especially good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
+    },
+    "booster/exceptional": {
+        "text": "exceptional good",
+        "neg": "0.000",
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/exceptionally": {
         "text": "exceptionally good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
+    },
+    "booster/extreme": {
+        "text": "extreme good",
+        "neg": "0.000",
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/extremely": {
         "text": "extremely good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/fabulously": {
         "text": "fabulously good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/flippin": {
         "text": "flippin good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/flipping": {
         "text": "flipping good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
+    },
+    "booster/frackin": {
+        "text": "frackin good",
+        "neg": "0.000",
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
+    },
+    "booster/fracking": {
+        "text": "fracking good",
+        "neg": "0.000",
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/frickin": {
         "text": "frickin good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/fricking": {
         "text": "fricking good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/friggin": {
         "text": "friggin good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/frigging": {
         "text": "frigging good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
+    },
+    "booster/fuckin": {
+        "text": "fuckin good",
+        "neg": "0.000",
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/fucking": {
         "text": "fucking good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
+    },
+    "booster/fuggin": {
+        "text": "fuggin good",
+        "neg": "0.000",
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
+    },
+    "booster/fugging": {
+        "text": "fugging good",
+        "neg": "0.000",
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/fully": {
         "text": "fully good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/greatly": {
         "text": "greatly good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/hardly": {
         "text": "hardly good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/hella": {
         "text": "hella good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/highly": {
         "text": "highly good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/hugely": {
         "text": "hugely good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
+    },
+    "booster/incredible": {
+        "text": "incredible good",
+        "neg": "0.000",
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/incredibly": {
         "text": "incredibly good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/intensely": {
         "text": "intensely good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/just enough": {
         "text": "just enough good",
         "neg": "0.000",
-        "neu": "0.582",
-        "pos": "0.418",
-        "compound": "0.1116"
+        "neu": "0.408",
+        "pos": "0.592",
+        "compound": "0.4404"
     },
     "booster/kind of": {
         "text": "kind of good",
         "neg": "0.000",
-        "neu": "0.582",
-        "pos": "0.418",
-        "compound": "0.1116"
+        "neu": "0.408",
+        "pos": "0.592",
+        "compound": "0.4404"
     },
     "booster/kind-of": {
         "text": "kind-of good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/kinda": {
         "text": "kinda good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/kindof": {
         "text": "kindof good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/less": {
         "text": "less good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/little": {
         "text": "little good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
+    },
+    "booster/major": {
+        "text": "major good",
+        "neg": "0.000",
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/majorly": {
         "text": "majorly good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
+    },
+    "booster/marginal": {
+        "text": "marginal good",
+        "neg": "0.000",
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/marginally": {
         "text": "marginally good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/more": {
         "text": "more good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/most": {
         "text": "most good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/occasional": {
         "text": "occasional good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/occasionally": {
         "text": "occasionally good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/particularly": {
         "text": "particularly good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/partly": {
         "text": "partly good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/purely": {
         "text": "purely good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/quite": {
         "text": "quite good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/really": {
         "text": "really good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/remarkably": {
         "text": "remarkably good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
+    },
+    "booster/scarce": {
+        "text": "scarce good",
+        "neg": "0.000",
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/scarcely": {
         "text": "scarcely good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
-    "booster/seemingly": {
-        "text": "seemingly good",
+    "booster/slight": {
+        "text": "slight good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/slightly": {
         "text": "slightly good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/so": {
         "text": "so good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/somewhat": {
         "text": "somewhat good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/sort of": {
         "text": "sort of good",
         "neg": "0.000",
-        "neu": "0.582",
-        "pos": "0.418",
-        "compound": "0.1116"
+        "neu": "0.408",
+        "pos": "0.592",
+        "compound": "0.4404"
     },
     "booster/sort-of": {
         "text": "sort-of good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/sorta": {
         "text": "sorta good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/sortof": {
         "text": "sortof good",
         "neg": "0.000",
-        "neu": "0.275",
-        "pos": "0.725",
-        "compound": "0.3892"
+        "neu": "0.277",
+        "pos": "0.723",
+        "compound": "0.3832"
     },
     "booster/substantially": {
         "text": "substantially good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/thoroughly": {
         "text": "thoroughly good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
+    },
+    "booster/total": {
+        "text": "total good",
+        "neg": "0.000",
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/totally": {
         "text": "totally good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/tremendous": {
         "text": "tremendous good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/tremendously": {
         "text": "tremendously good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/uber": {
         "text": "uber good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/unbelievably": {
         "text": "unbelievably good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/unusually": {
         "text": "unusually good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
+    },
+    "booster/utter": {
+        "text": "utter good",
+        "neg": "0.000",
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/utterly": {
         "text": "utterly good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "booster/very": {
         "text": "very good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "but_clause/double": {
         "text": "good but terrible but good",
@@ -575,17 +673,17 @@
     },
     "caps/negated_lower": {
         "text": "not good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "caps/negated_upper": {
         "text": "NOT GOOD",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "caps/upper": {
         "text": "GOOD",
@@ -711,17 +809,17 @@
     },
     "edge/contraction": {
         "text": "isn't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "edge/emoji_mixed": {
         "text": "This is REALLY good!!! 😁 but not terrible",
         "neg": "0.000",
-        "neu": "0.555",
-        "pos": "0.445",
-        "compound": "0.7360"
+        "neu": "0.509",
+        "pos": "0.491",
+        "compound": "0.8257"
     },
     "edge/emoji_only": {
         "text": "😁😁😁",
@@ -761,8 +859,8 @@
     "edge/long_sentence": {
         "text": "This product is amazing and I love it. This product is amazing and I love it. This product is amazing and I love it. This product is amazing and I love it. This product is amazing and I love it. This product is amazing and I love it. This product is amazing and I love it. This product is amazing and I love it. This product is amazing and I love it. This product is amazing and I love it. ",
         "neg": "0.000",
-        "neu": "0.385",
-        "pos": "0.615",
+        "neu": "0.429",
+        "pos": "0.571",
         "compound": "0.9979"
     },
     "edge/newlines": {
@@ -782,7 +880,7 @@
     "edge/numbers_only": {
         "text": "1 2 3 4 5",
         "neg": "0.000",
-        "neu": "0.000",
+        "neu": "1.000",
         "pos": "0.000",
         "compound": "0.0000"
     },
@@ -810,7 +908,7 @@
     "edge/single_char": {
         "text": "a",
         "neg": "0.000",
-        "neu": "0.000",
+        "neu": "1.000",
         "pos": "0.000",
         "compound": "0.0000"
     },
@@ -1201,17 +1299,24 @@
     },
     "idiom/bad ass": {
         "text": "bad ass",
-        "neg": "0.583",
+        "neg": "1.000",
         "neu": "0.000",
-        "pos": "0.417",
-        "compound": "-0.2500"
+        "pos": "0.000",
+        "compound": "-0.7906"
+    },
+    "idiom/badass": {
+        "text": "badass",
+        "neg": "0.000",
+        "neu": "0.000",
+        "pos": "1.000",
+        "compound": "0.3400"
     },
     "idiom/beating heart": {
         "text": "beating heart",
-        "neg": "0.423",
+        "neg": "0.417",
         "neu": "0.000",
-        "pos": "0.577",
-        "compound": "0.2732"
+        "pos": "0.583",
+        "compound": "0.2960"
     },
     "idiom/blow smoke": {
         "text": "blow smoke",
@@ -1234,19 +1339,12 @@
         "pos": "0.000",
         "compound": "0.0000"
     },
-    "idiom/broken heart": {
-        "text": "broken heart",
-        "neg": "1.000",
-        "neu": "0.000",
-        "pos": "0.000",
-        "compound": "-0.7906"
-    },
     "idiom/bus stop": {
         "text": "bus stop",
-        "neg": "0.000",
-        "neu": "1.000",
+        "neg": "0.688",
+        "neu": "0.313",
         "pos": "0.000",
-        "compound": "0.0000"
+        "compound": "-0.2960"
     },
     "idiom/cooking with gas": {
         "text": "cooking with gas",
@@ -1285,10 +1383,10 @@
     },
     "idiom/kiss of death": {
         "text": "kiss of death",
-        "neg": "0.397",
-        "neu": "0.159",
-        "pos": "0.444",
-        "compound": "0.0772"
+        "neg": "0.506",
+        "neu": "0.130",
+        "pos": "0.364",
+        "compound": "-0.2732"
     },
     "idiom/on the ball": {
         "text": "on the ball",
@@ -1299,17 +1397,17 @@
     },
     "idiom/the bomb": {
         "text": "the bomb",
-        "neg": "0.000",
-        "neu": "0.200",
-        "pos": "0.800",
-        "compound": "0.6124"
+        "neg": "0.762",
+        "neu": "0.238",
+        "pos": "0.000",
+        "compound": "-0.4939"
     },
     "idiom/the shit": {
         "text": "the shit",
-        "neg": "0.000",
-        "neu": "0.200",
-        "pos": "0.800",
-        "compound": "0.6124"
+        "neg": "0.783",
+        "neu": "0.217",
+        "pos": "0.000",
+        "compound": "-0.5574"
     },
     "idiom/to die for": {
         "text": "to die for",
@@ -1353,12 +1451,19 @@
         "pos": "0.278",
         "compound": "-0.2500"
     },
+    "idiom_sentence/badass": {
+        "text": "it was badass today",
+        "neg": "0.000",
+        "neu": "0.556",
+        "pos": "0.444",
+        "compound": "0.3400"
+    },
     "idiom_sentence/beating heart": {
         "text": "it was beating heart today",
-        "neg": "0.297",
-        "neu": "0.297",
-        "pos": "0.406",
-        "compound": "0.2732"
+        "neg": "0.286",
+        "neu": "0.286",
+        "pos": "0.429",
+        "compound": "0.3612"
     },
     "idiom_sentence/blow smoke": {
         "text": "it was blow smoke today",
@@ -1380,13 +1485,6 @@
         "neu": "1.000",
         "pos": "0.000",
         "compound": "0.0000"
-    },
-    "idiom_sentence/broken heart": {
-        "text": "it was broken heart today",
-        "neg": "0.700",
-        "neu": "0.300",
-        "pos": "0.000",
-        "compound": "-0.7906"
     },
     "idiom_sentence/bus stop": {
         "text": "it was bus stop today",
@@ -1489,30 +1587,30 @@
     "kind_of/kind_bare": {
         "text": "kind",
         "neg": "0.000",
-        "neu": "1.000",
-        "pos": "0.000",
-        "compound": "0.0000"
+        "neu": "0.000",
+        "pos": "1.000",
+        "compound": "0.5267"
     },
     "kind_of/kind_of_good": {
         "text": "kind of good",
         "neg": "0.000",
-        "neu": "0.582",
-        "pos": "0.418",
-        "compound": "0.1116"
+        "neu": "0.408",
+        "pos": "0.592",
+        "compound": "0.4404"
     },
     "kind_of/kind_person": {
         "text": "he is a kind person",
         "neg": "0.000",
-        "neu": "1.000",
-        "pos": "0.000",
-        "compound": "0.0000"
+        "neu": "0.541",
+        "pos": "0.459",
+        "compound": "0.5267"
     },
     "kind_of/sort_of_good": {
         "text": "sort of good",
         "neg": "0.000",
-        "neu": "0.582",
-        "pos": "0.418",
-        "compound": "0.1116"
+        "neu": "0.408",
+        "pos": "0.592",
+        "compound": "0.4404"
     },
     "least_never/at_least": {
         "text": "at least it works",
@@ -1537,38 +1635,38 @@
     },
     "least_never/never_bare": {
         "text": "never good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "least_never/never_sentence": {
         "text": "I have never been so happy",
-        "neg": "0.343",
-        "neu": "0.657",
-        "pos": "0.000",
-        "compound": "-0.2699"
+        "neg": "0.000",
+        "neu": "0.513",
+        "pos": "0.487",
+        "compound": "0.6948"
     },
     "least_never/never_so": {
         "text": "never so good",
-        "neg": "0.494",
-        "neu": "0.506",
-        "pos": "0.000",
-        "compound": "-0.2385"
+        "neg": "0.000",
+        "neu": "0.348",
+        "pos": "0.652",
+        "compound": "0.5777"
     },
     "least_never/never_this": {
         "text": "never this good",
-        "neg": "0.478",
-        "neu": "0.522",
-        "pos": "0.000",
-        "compound": "-0.2108"
+        "neg": "0.000",
+        "neu": "0.372",
+        "pos": "0.628",
+        "compound": "0.5228"
     },
     "least_never/without_doubt": {
         "text": "without doubt good",
-        "neg": "0.390",
-        "neu": "0.250",
-        "pos": "0.360",
-        "compound": "-0.0302"
+        "neg": "0.000",
+        "neu": "0.166",
+        "pos": "0.834",
+        "compound": "0.6136"
     },
     "lexicon/=|": {
         "text": "=|",
@@ -1852,416 +1950,416 @@
     },
     "negation/ain't": {
         "text": "ain't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/aint": {
         "text": "aint good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/aren't": {
         "text": "aren't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/arent": {
         "text": "arent good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/can't": {
         "text": "can't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/cannot": {
         "text": "cannot good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/cant": {
         "text": "cant good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/couldn't": {
         "text": "couldn't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/couldnt": {
         "text": "couldnt good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/daren't": {
         "text": "daren't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/darent": {
         "text": "darent good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/despite": {
         "text": "despite good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/didn't": {
         "text": "didn't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/didnt": {
         "text": "didnt good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/doesn't": {
         "text": "doesn't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/doesnt": {
         "text": "doesnt good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/don't": {
         "text": "don't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/dont": {
         "text": "dont good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/hadn't": {
         "text": "hadn't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/hadnt": {
         "text": "hadnt good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/hasn't": {
         "text": "hasn't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/hasnt": {
         "text": "hasnt good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/haven't": {
         "text": "haven't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/havent": {
         "text": "havent good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/isn't": {
         "text": "isn't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/isnt": {
         "text": "isnt good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/mightn't": {
         "text": "mightn't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/mightnt": {
         "text": "mightnt good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/mustn't": {
         "text": "mustn't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/mustnt": {
         "text": "mustnt good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/needn't": {
         "text": "needn't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/neednt": {
         "text": "neednt good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/neither": {
         "text": "neither good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/never": {
         "text": "never good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/none": {
         "text": "none good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/nope": {
         "text": "nope good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/nor": {
         "text": "nor good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/not": {
         "text": "not good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/nothing": {
         "text": "nothing good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/nowhere": {
         "text": "nowhere good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/oughtn't": {
         "text": "oughtn't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/oughtnt": {
         "text": "oughtnt good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/rarely": {
         "text": "rarely good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/seldom": {
         "text": "seldom good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/shan't": {
         "text": "shan't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/shant": {
         "text": "shant good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/shouldn't": {
         "text": "shouldn't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/shouldnt": {
         "text": "shouldnt good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/uh-uh": {
         "text": "uh-uh good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/uhuh": {
         "text": "uhuh good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/wasn't": {
         "text": "wasn't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/wasnt": {
         "text": "wasnt good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/weren't": {
         "text": "weren't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/werent": {
         "text": "werent good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/without": {
         "text": "without good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/won't": {
         "text": "won't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/wont": {
         "text": "wont good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/wouldn't": {
         "text": "wouldn't good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "negation/wouldnt": {
         "text": "wouldnt good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "never_check/control_good": {
         "text": "good",
@@ -2286,24 +2384,24 @@
     },
     "never_check/never_good": {
         "text": "never good",
-        "neg": "0.609",
-        "neu": "0.391",
+        "neg": "0.706",
+        "neu": "0.294",
         "pos": "0.000",
-        "compound": "-0.1423"
+        "compound": "-0.3412"
     },
     "never_check/never_so_good": {
         "text": "never so good",
-        "neg": "0.494",
-        "neu": "0.506",
-        "pos": "0.000",
-        "compound": "-0.2385"
+        "neg": "0.000",
+        "neu": "0.348",
+        "pos": "0.652",
+        "compound": "0.5777"
     },
     "never_check/never_this_good": {
         "text": "never this good",
-        "neg": "0.478",
-        "neu": "0.522",
-        "pos": "0.000",
-        "compound": "-0.2108"
+        "neg": "0.000",
+        "neu": "0.372",
+        "pos": "0.628",
+        "compound": "0.5228"
     },
     "never_check/so_far_amazing": {
         "text": "so the cake looks amazing",
@@ -2315,16 +2413,16 @@
     "never_check/so_good": {
         "text": "so good",
         "neg": "0.000",
-        "neu": "0.240",
-        "pos": "0.760",
-        "compound": "0.4877"
+        "neu": "0.238",
+        "pos": "0.762",
+        "compound": "0.4927"
     },
     "never_check/so_is_good": {
         "text": "so it is good",
         "neg": "0.000",
-        "neu": "0.484",
-        "pos": "0.516",
-        "compound": "0.4927"
+        "neu": "0.487",
+        "pos": "0.513",
+        "compound": "0.4877"
     },
     "never_check/that_is_good": {
         "text": "that is good",
@@ -2399,9 +2497,9 @@
     "punctuation/ep4": {
         "text": "good!!!!",
         "neg": "0.000",
-        "neu": "1.000",
-        "pos": "0.000",
-        "compound": "0.0000"
+        "neu": "0.000",
+        "pos": "1.000",
+        "compound": "0.6209"
     },
     "punctuation/mixed": {
         "text": "good?!?!",
@@ -2441,9 +2539,9 @@
     "punctuation/qm4": {
         "text": "good????",
         "neg": "0.000",
-        "neu": "1.000",
-        "pos": "0.000",
-        "compound": "0.0000"
+        "neu": "0.000",
+        "pos": "1.000",
+        "compound": "0.5940"
     },
     "readme/simple_emoji": {
         "text": "😁",
@@ -2473,10 +2571,10 @@
             "mediocre": "-1.0",
             "agressive": "-0.5"
         },
-        "neg": "0.338",
-        "neu": "0.662",
+        "neg": "0.310",
+        "neu": "0.690",
         "pos": "0.000",
-        "compound": "-0.2598"
+        "compound": "-0.2006"
     },
     "readme_advanced/amazing": {
         "text": "This cake looks amazing",
@@ -2498,8 +2596,8 @@
             "agressive": "-0.5"
         },
         "neg": "0.000",
-        "neu": "0.761",
-        "pos": "0.239",
+        "neu": "0.769",
+        "pos": "0.231",
         "compound": "0.7650"
     },
     "readme_advanced/mediocre": {
@@ -2534,9 +2632,9 @@
             "agressive": "-0.5"
         },
         "neg": "0.000",
-        "neu": "0.457",
-        "pos": "0.543",
-        "compound": "0.5520"
+        "neu": "0.455",
+        "pos": "0.545",
+        "compound": "0.5563"
     },
     "readme_advanced/to_be": {
         "text": "To be or not to be?",

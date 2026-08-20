@@ -5,9 +5,9 @@ on:
   # must stay covered — security backports land there as PRs and are verified
   # against the same characterization baseline as master.
   push:
-    branches: [ master, '1.x' ]
+    branches: [ master, '1.x', '2.x' ]
   pull_request:
-    branches: [ master, '1.x' ]
+    branches: [ master, '1.x', '2.x' ]
 
 jobs:
   tests:
@@ -40,6 +40,13 @@ jobs:
 
       - name: Static analysis
         run: composer stan
+
+      # 3.x is a faithful port of reference VADER; conformance must stay at 0.
+      # Runs once (not per PHP version) — it compares scoring against Python,
+      # which the matrix above already proves is version-independent.
+      - name: VADER conformance
+        if: matrix.php == '8.3'
+        run: composer conformance -- --worktree
 
       # The baseline must be reproducible: regenerating it on a clean checkout
       # must produce no diff. A diff here means scoring is not deterministic

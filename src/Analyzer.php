@@ -109,57 +109,9 @@ class Analyzer
         return Config::BOOSTER_DICT[strtolower($word)];
     }
 
-    private function IsInLexicon(string $word): bool
-    {
-        $lowercase = strtolower($word);
-
-        return array_key_exists($lowercase, $this->lexicon);
-    }
-
     private function IsUpperCaseWord(string $word): bool
     {
         return ctype_upper($word);
-    }
-
-    private function getValenceFromLexicon($word)
-    {
-        return $this->lexicon[strtolower($word)];
-    }
-
-    private function getTargetWordFromContext(array $wordInContext): string
-    {
-        return $wordInContext[count($wordInContext)-1];
-    }
-
-    /*
-        Gets the precedding two words to check for emphasis
-    */
-    private function getWordInContext(array $wordList, int $currentWordPosition): array
-    {
-        $precedingWordList =[];
-
-        //push the actual word on to the context list
-        array_unshift($precedingWordList, $wordList[$currentWordPosition]);
-        //If the word position is greater than 2 then we know we are not going to overflow
-        if (($currentWordPosition-1)>=0) {
-            array_unshift($precedingWordList, $wordList[$currentWordPosition-1]);
-        } else {
-            array_unshift($precedingWordList, "");
-        }
-
-        if (($currentWordPosition-2)>=0) {
-            array_unshift($precedingWordList, $wordList[$currentWordPosition-2]);
-        } else {
-            array_unshift($precedingWordList, "");
-        }
-
-        if (($currentWordPosition-3)>=0) {
-            array_unshift($precedingWordList, $wordList[$currentWordPosition-3]);
-        } else {
-            array_unshift($precedingWordList, "");
-        }
-
-        return $precedingWordList;
     }
 
     /*
@@ -194,28 +146,25 @@ class Analyzer
         $sentiments = [];
         $words_and_emoticons = $this->current_sentitext->getWordsAndEmoticons();
 
-        for ($i=0; $i<=count($words_and_emoticons)-1; $i++) {
-            $valence = 0.0;
-            $wordBeingTested = $words_and_emoticons[$i];
+        for ($i = 0; $i <= count($words_and_emoticons) - 1; $i++) {
+            $itemLower = strtolower($words_and_emoticons[$i]);
 
-            //If this is a booster word add a 0 valances then go to next word as it does not express sentiment directly
-           /* if ($this->IsBoosterWord($wordBeingTested)){
-                echo "\t\tThe word is a booster word: setting sentiment to 0.0\n";
-            }*/
- //var_dump($i);
-            //If the word is not in the Lexicon then it does not express sentiment. So just ignore it.
-            if ($this->IsInLexicon($wordBeingTested)) {
-
-                //Special case because kind is in the lexicon so the modifier kind of needs to be skipped
-                if ("kind" !=$words_and_emoticons[$i] && "of" != $words_and_emoticons[$i]) {
-                    $valence = $this->getValenceFromLexicon($wordBeingTested);
-
-                    $wordInContext = $this->getWordInContext($words_and_emoticons, $i);
-                    //If we are here then we have a word that enhance booster words
-                    $valence = $this->adjustBoosterSentiment($wordInContext, $valence);
-                }
+            // Lexicon words that act as modifiers or negations score 0 themselves.
+            if (array_key_exists($itemLower, Config::BOOSTER_DICT)) {
+                $sentiments[] = 0.0;
+                continue;
             }
-            array_push($sentiments, $valence);
+
+            // "kind" only when followed by "of" — the previous implementation
+            // skipped every "kind" and every "of", zeroing "he is a kind person".
+            if ($i < count($words_and_emoticons) - 1
+                && $itemLower === "kind"
+                && strtolower($words_and_emoticons[$i + 1]) === "of") {
+                $sentiments[] = 0.0;
+                continue;
+            }
+
+            $sentiments[] = $this->sentimentValence($words_and_emoticons, $i);
         }
         //Once we have a sentiment for each word adjust the sentimest if but is present
         $sentiments = $this->_but_check($words_and_emoticons, $sentiments);
@@ -300,6 +249,73 @@ class Analyzer
         $this->current_sentitext = null;
     }
 
+    /**
+     * Score one token in context. Mirrors sentiment_valence() in reference VADER.
+     *
+     * The previous implementation walked a precomputed [i-3, i-2, i-1, i] window
+     * by array position, which inverted the distance damping, omitted the
+     * "preceding word not in the lexicon" gate, and applied negation and idiom
+     * checks once outside the loop instead of per step. This follows the
+     * reference structure directly.
+     *
+     * @param array<int, string> $words
+     */
+    private function sentimentValence(array $words, int $i): float
+    {
+        $item = $words[$i];
+        $itemLower = strtolower($item);
+
+        if (!array_key_exists($itemLower, $this->lexicon)) {
+            return 0.0;
+        }
+
+        $valence = (float) $this->lexicon[$itemLower];
+
+        // "no" as a negator for an adjacent lexicon item, vs "no" standing alone.
+        if ($itemLower === "no"
+            && $i !== count($words) - 1
+            && array_key_exists(strtolower($words[$i + 1]), $this->lexicon)) {
+            $valence = 0.0;
+        }
+
+        if (($i > 0 && strtolower($words[$i - 1]) === "no")
+            || ($i > 1 && strtolower($words[$i - 2]) === "no")
+            || ($i > 2 && strtolower($words[$i - 3]) === "no"
+                && in_array(strtolower($words[$i - 1]), ["or", "nor"], true))) {
+            $valence = (float) $this->lexicon[$itemLower] * Config::N_SCALAR;
+        }
+
+        $valence = $this->applyValenceCapsBoost($item, $valence);
+
+        for ($startI = 0; $startI < 3; $startI++) {
+            $precedingIndex = $i - ($startI + 1);
+
+            if ($i <= $startI
+                || array_key_exists(strtolower($words[$precedingIndex]), $this->lexicon)) {
+                continue;
+            }
+
+            $scalar = $this->boosterScaleAdjustment($words[$precedingIndex], $valence);
+
+            if ($startI === 1 && $scalar !== 0.0) {
+                $scalar *= 0.95;
+            }
+
+            if ($startI === 2 && $scalar !== 0.0) {
+                $scalar *= 0.9;
+            }
+
+            $valence += $scalar;
+            $valence = $this->_negation_check($valence, $words, $startI, $i);
+
+            if ($startI === 2) {
+                $valence = $this->_idioms_check($valence, $words, $i);
+            }
+        }
+
+        return $this->_least_check($valence, $words, $i);
+    }
+
     /** @return array<int, string> */
     private function str_split_unicode(string $str): array
     {
@@ -345,73 +361,23 @@ class Analyzer
     // dampen the scalar modifier of preceding words and emoticons
     // (excluding the ones that immediately preceed the item) based
     // on their distance from the current item.
-    private function dampendBoosterScalerByPosition($booster, $position)
+    /**
+     * Mirrors _least_check() in reference VADER, including the
+     * "preceding word not in the lexicon" gate that was missing here.
+     *
+     * @param array<int, string> $words
+     */
+    private function _least_check(float $valence, array $words, int $i): float
     {
-        if (0===$booster) {
-            return $booster;
-        }
+        $prev = $i > 0 ? strtolower($words[$i - 1]) : '';
+        $prevInLexicon = $i > 0 && array_key_exists($prev, $this->lexicon);
 
-        if (1==$position) {
-            return $booster*0.95;
-        }
-
-        if (2==$position) {
-            return $booster*0.9;
-        }
-
-        return $booster;
-    }
-
-    private function adjustBoosterSentiment($wordInContext, $valence)
-    {
-        //The target word is always the last word
-        $targetWord = $this->getTargetWordFromContext($wordInContext);
-
-        //check if sentiment laden word is in ALL CAPS (while others aren't) and apply booster
-        $valence = $this->applyValenceCapsBoost($targetWord, $valence);
-
-        $valence = $this->modifyValenceBasedOnContext($wordInContext, $valence);
-
-        return $valence;
-    }
-
-    private function modifyValenceBasedOnContext($wordInContext, $valence)
-    {
-        $wordToTest = $this->getTargetWordFromContext($wordInContext);
-            //if($this->IsInLexicon($wordToTest)){
-            //  continue;
-            //}
-        for ($i=0; $i<count($wordInContext)-1; $i++) {
-            $scalarValue = $this->boosterScaleAdjustment($wordInContext[$i], $valence);
-            $scalarValue = $this->dampendBoosterScalerByPosition($scalarValue, $i);
-            $valence = $valence+$scalarValue;
-        }
-
-        $valence = $this->_never_check($wordInContext, $valence);
-
-        $valence = $this->_idioms_check($wordInContext, $valence);
-
-        // future work: consider other sentiment-laden idioms
-        // other_idioms =
-        // {"back handed": -2, "blow smoke": -2, "blowing smoke": -2,
-        //  "upper hand": 1, "break a leg": 2,
-        //  "cooking with gas": 2, "in the black": 2, "in the red": -2,
-        //  "on the ball": 2,"under the weather": -2}
-
-        $valence = $this->_least_check($wordInContext, $valence);
-
-        return $valence;
-    }
-
-    private function _least_check($wordInContext, $valence)
-    {
-        // check for negation case using "least"
-        //if the previous word is least"
-        if (strtolower($wordInContext[2]) == "least") {
-            //but not "at least {word}" "very least {word}"
-            if (strtolower($wordInContext[1]) != "at" && strtolower($wordInContext[1]) != "very") {
-                $valence = $valence*Config::N_SCALAR;
+        if ($i > 1 && !$prevInLexicon && $prev === "least") {
+            if (strtolower($words[$i - 2]) !== "at" && strtolower($words[$i - 2]) !== "very") {
+                $valence *= Config::N_SCALAR;
             }
+        } elseif ($i > 0 && !$prevInLexicon && $prev === "least") {
+            $valence *= Config::N_SCALAR;
         }
 
         return $valence;
@@ -437,84 +403,106 @@ class Analyzer
         return $sentiments;
     }
 
-    private function _idioms_check($wordInContext, $valence)
+    /**
+     * Mirrors _special_idioms_check() in reference VADER.
+     *
+     * Only ever called at startI === 2, matching the reference — which is why
+     * short phrases such as "bad ass" do not pick up their idiom value in either
+     * implementation.
+     *
+     * @param array<int, string> $words
+     */
+    private function _idioms_check(float $valence, array $words, int $i): float
     {
-        $onezero = sprintf("%s %s", $wordInContext[2], $wordInContext[3]);
+        $lower = array_map('strtolower', $words);
 
-        $twoonezero = sprintf("%s %s %s", $wordInContext[1], $wordInContext[2], $wordInContext[3]);
+        $onezero     = sprintf("%s %s", $lower[$i - 1], $lower[$i]);
+        $twoonezero  = sprintf("%s %s %s", $lower[$i - 2], $lower[$i - 1], $lower[$i]);
+        $twoone      = sprintf("%s %s", $lower[$i - 2], $lower[$i - 1]);
+        $threetwoone = sprintf("%s %s %s", $lower[$i - 3], $lower[$i - 2], $lower[$i - 1]);
+        $threetwo    = sprintf("%s %s", $lower[$i - 3], $lower[$i - 2]);
 
-        $twoone = sprintf("%s %s", $wordInContext[1], $wordInContext[2]);
-
-        $threetwoone = sprintf("%s %s %s", $wordInContext[0], $wordInContext[1], $wordInContext[2]);
-
-        $threetwo = sprintf("%s %s", $wordInContext[0], $wordInContext[1]);
-
-        $zeroone = sprintf("%s %s", $wordInContext[3], $wordInContext[2]);
-
-        $zeroonetwo = sprintf("%s %s %s", $wordInContext[3], $wordInContext[2], $wordInContext[1]);
-
-        $sequences = [$onezero, $twoonezero, $twoone, $threetwoone, $threetwo];
-
-        foreach ($sequences as $seq) {
-            $key = strtolower($seq);
-            if (array_key_exists($key, Config::SPECIAL_CASE_IDIOMS)) {
-                $valence = Config::SPECIAL_CASE_IDIOMS[$key];
+        foreach ([$onezero, $twoonezero, $twoone, $threetwoone, $threetwo] as $seq) {
+            if (array_key_exists($seq, Config::SPECIAL_CASE_IDIOMS)) {
+                $valence = (float) Config::SPECIAL_CASE_IDIOMS[$seq];
                 break;
             }
+        }
 
-/*
-            Positive idioms check.  Not implementing it yet
-            if(count($words_and_emoticons)-1 > $i){
-                $zeroone = sprintf("%s %s",$words_and_emoticons[$i], $words_and_emoticons[$i+1]);
-               if (in_array($zeroone, Config::SPECIAL_CASE_IDIOMS)){
-                    $valence = Config::SPECIAL_CASE_IDIOMS[$zeroone];
-                }
-            }
-            if(count($words_and_emoticons)-1 > $i+1){
-                $zeroonetwo = sprintf("%s %s %s",$words_and_emoticons[$i], $words_and_emoticons[$i+1], $words_and_emoticons[$i+2]);
-                if (in_array($zeroonetwo, Config::SPECIAL_CASE_IDIOMS)){
-                    $valence = Config::SPECIAL_CASE_IDIOMS[$zeroonetwo];
-                }
-            }
-*/
+        $lastIndex = count($lower) - 1;
 
-            // check for booster/dampener bi-grams such as 'sort of' or 'kind of'
-            if ($this->IsBoosterWord($threetwo) || $this->IsBoosterWord($twoone)) {
-                $valence = $valence+Config::B_DECR;
+        if ($lastIndex > $i) {
+            $zeroone = sprintf("%s %s", $lower[$i], $lower[$i + 1]);
+            if (array_key_exists($zeroone, Config::SPECIAL_CASE_IDIOMS)) {
+                $valence = (float) Config::SPECIAL_CASE_IDIOMS[$zeroone];
+            }
+        }
+
+        if ($lastIndex > $i + 1) {
+            $zeroonetwo = sprintf("%s %s %s", $lower[$i], $lower[$i + 1], $lower[$i + 2]);
+            if (array_key_exists($zeroonetwo, Config::SPECIAL_CASE_IDIOMS)) {
+                $valence = (float) Config::SPECIAL_CASE_IDIOMS[$zeroonetwo];
+            }
+        }
+
+        // Booster/dampener n-grams such as "sort of" or "kind of" — applied once
+        // per matching n-gram, not once per sequence-loop iteration as before.
+        foreach ([$threetwoone, $threetwo, $twoone] as $nGram) {
+            if (array_key_exists($nGram, Config::BOOSTER_DICT)) {
+                $valence += Config::BOOSTER_DICT[$nGram];
             }
         }
 
         return $valence;
     }
 
-    private function _never_check($wordInContext, $valance)
+    /**
+     * Mirrors _negation_check() in reference VADER.
+     *
+     * NOTE the startI === 2 branch reproduces an operator-precedence quirk in the
+     * reference: the trailing "so"/"this" test binds loosely, so it fires whether
+     * or not "never" is present. Deliberate — 3.0 targets parity with reference,
+     * quirks included.
+     *
+     * Previously this package multiplied by B_DECR (-0.293) rather than
+     * N_SCALAR (-0.74), making every negation roughly 2.5x too weak.
+     *
+     * @param array<int, string> $words
+     */
+    private function _negation_check(float $valence, array $words, int $startI, int $i): float
     {
-        //If the sentiment word is preceded by never so/this we apply a modifier
-        $neverModifier = 0;
-        if ("never" == $wordInContext[0]) {
-            $neverModifier = 1.25;
-        } else if ("never" == $wordInContext[1]) {
-            $neverModifier = 1.5;
-        }
-        //Only apply the so/this modifier when "never" was actually found. Without
-        //this guard $neverModifier stays 0 and the multiplication silently zeroes
-        //the valence of any sentiment word within two tokens of "so" or "this",
-        //so phrases like "this is good" and "so good" scored neutral.
-        if ($neverModifier != 0
-            && ("so" == $wordInContext[1] || "so"== $wordInContext[2] || "this" == $wordInContext[1] || "this" == $wordInContext[2])) {
-            $valance *= $neverModifier;
+        $lower = array_map('strtolower', $words);
+
+        if ($startI === 0 && $this->IsNegated($lower[$i - 1])) {
+            $valence *= Config::N_SCALAR;
         }
 
-        //if any of the words in context are negated words apply negative scaler
-        foreach ($wordInContext as $wordToCheck) {
-            if ($this->IsNegated($wordToCheck)) {
-                $valance *= Config::B_DECR;
+        if ($startI === 1) {
+            if ($lower[$i - 2] === "never"
+                && ($lower[$i - 1] === "so" || $lower[$i - 1] === "this")) {
+                $valence *= 1.25;
+            } elseif ($lower[$i - 2] === "without" && $lower[$i - 1] === "doubt") {
+                $valence = $valence;
+            } elseif ($this->IsNegated($lower[$i - 2])) {
+                $valence *= Config::N_SCALAR;
             }
         }
 
-        return $valance;
-    }
+        if ($startI === 2) {
+            if (($lower[$i - 3] === "never"
+                    && ($lower[$i - 2] === "so" || $lower[$i - 2] === "this"))
+                || ($lower[$i - 1] === "so" || $lower[$i - 1] === "this")) {
+                $valence *= 1.25;
+            } elseif ($lower[$i - 3] === "without"
+                && ($lower[$i - 2] === "doubt" || $lower[$i - 1] === "doubt")) {
+                $valence = $valence;
+            } elseif ($this->IsNegated($lower[$i - 3])) {
+                $valence *= Config::N_SCALAR;
+            }
+        }
 
+        return $valence;
+    }
 
     private function _punctuation_emphasis($sum_s, string $text): float
     {

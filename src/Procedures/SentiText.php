@@ -22,6 +22,9 @@ class SentiText
     const PUNC_LIST = [".", "!", "?", ",", ";", ":", "-", "'", "\"",
              "!!", "!!!", "??", "???", "?!?", "!?!", "?!?!", "!?!?"];
 
+    /** Python's string.punctuation, used for token trimming. */
+    const PUNCTUATION = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+
 
     public function __construct(string $text)
     {
@@ -48,24 +51,6 @@ class SentiText
     }
 
     /*
-        Remove all punctation from a string
-    */
-    public function strip_punctuation(string $string): string
-    {
-        //$string = strtolower($string);
-        return preg_replace("/[[:punct:]]+/", "", $string);
-    }
-
-    public function array_count_values_of(array $haystack, string $needle): int
-    {
-        if (!in_array($needle, $haystack, true)) {
-            return 0;
-        }
-        $counts = array_count_values($haystack);
-        return $counts[$needle];
-    }
-
-    /*
         Check whether just some words in the input are ALL CAPS
 
         :param list words: The words to inspect
@@ -89,56 +74,43 @@ class SentiText
         return $is_different;
     }
 
-    public function _words_only(): array
-    {
-        $text_mod = $this->strip_punctuation($this->text);
-        // removes punctuation (but loses emoticons & contractions)
-        $words_only = preg_split('/\s+/', $text_mod);
-        # get rid of empty items or single letter "words" like 'a' and 'I'
-        $works_only = array_filter($words_only, function ($word) {
-            return strlen($word) > 1;
-        });
-        return $words_only;
-    }
-
+    /**
+     * Mirrors SentiText._words_and_emoticons() in reference VADER.
+     *
+     * Split on whitespace, then strip leading/trailing punctuation from each
+     * token — unless what remains is two characters or fewer, which means the
+     * token was probably an emoticon and is kept intact.
+     *
+     * The previous implementation dropped every single-character token and only
+     * stripped punctuation runs that appeared literally in PUNC_LIST. That
+     * shifted token indices (breaking every position-dependent rule) and left
+     * "good!!!!" untokenized, scoring it 0.0000.
+     *
+     * @return array<int, string>
+     */
     public function _words_and_emoticons(): array
     {
+        $tokens = preg_split('/\s+/u', trim($this->text), -1, PREG_SPLIT_NO_EMPTY);
 
-        $wes = preg_split('/\s+/', $this->text);
-
-        # get rid of residual empty items or single letter words
-        $wes = array_filter($wes, function ($word) {
-            return strlen($word) > 1;
-        });
-        //Need to remap the indexes of the array
-        $wes = array_values($wes);
-        $words_only = $this->_words_only();
-
-        foreach ($words_only as $word) {
-            foreach (self::PUNC_LIST as $punct) {
-                //replace all punct + word combinations with word
-                $pword = $punct .$word;
-
-
-                $x1 = $this->array_count_values_of($wes, $pword);
-                while ($x1 > 0) {
-                    $i = array_search($pword, $wes, true);
-                    unset($wes[$i]);
-                    array_splice($wes, $i, 0, $word);
-                    $x1 = $this->array_count_values_of($wes, $pword);
-                }
-                //Do the same as above but word then punct
-                $wordp = $word . $punct;
-                $x2 = $this->array_count_values_of($wes, $wordp);
-                while ($x2 > 0) {
-                    $i = array_search($wordp, $wes, true);
-                    unset($wes[$i]);
-                    array_splice($wes, $i, 0, $word);
-                    $x2 = $this->array_count_values_of($wes, $wordp);
-                }
-            }
+        if ($tokens === false) {
+            return [];
         }
 
-        return $wes;
+        return array_map([$this, 'stripPuncIfWord'], $tokens);
+    }
+
+    /**
+     * Python's str.strip(string.punctuation) equivalent, with the reference's
+     * "<= 2 characters means it was an emoticon" guard.
+     */
+    private function stripPuncIfWord(string $token): string
+    {
+        $stripped = trim($token, self::PUNCTUATION);
+
+        if (mb_strlen($stripped, 'UTF-8') <= 2) {
+            return $token;
+        }
+
+        return $stripped;
     }
 }

@@ -33,14 +33,14 @@ class Config
     //booster/dampener 'intensifiers' or 'degree adverbs'
     //http://en.wiktionary.org/wiki/Category:English_degree_adverbs
 
-    const BOOSTER_DICT = ["absolutely"=> self::B_INCR, "amazingly"=> self::B_INCR, "awfully"=> self::B_INCR, "completely"=> self::B_INCR, "considerably"=> self::B_INCR,
+    const BOOSTER_DICT = ["considerable"=> self::B_INCR, "exceptional"=> self::B_INCR, "extreme"=> self::B_INCR, "frackin"=> self::B_INCR, "fracking"=> self::B_INCR, "fuckin"=> self::B_INCR, "fuggin"=> self::B_INCR, "fugging"=> self::B_INCR, "incredible"=> self::B_INCR, "major"=> self::B_INCR, "marginal"=> self::B_DECR, "scarce"=> self::B_DECR, "slight"=> self::B_DECR, "total"=> self::B_INCR, "utter"=> self::B_INCR, "absolutely"=> self::B_INCR, "amazingly"=> self::B_INCR, "awfully"=> self::B_INCR, "completely"=> self::B_INCR, "considerably"=> self::B_INCR,
      "decidedly"=> self::B_INCR, "deeply"=> self::B_INCR, "effing"=> self::B_INCR,"enormous"=> self::B_INCR, "enormously"=> self::B_INCR,
      "entirely"=> self::B_INCR, "especially"=> self::B_INCR, "exceptionally"=> self::B_INCR, "extremely"=> self::B_INCR,
      "fabulously"=> self::B_INCR, "flipping"=> self::B_INCR, "flippin"=> self::B_INCR,
      "fricking"=> self::B_INCR, "frickin"=> self::B_INCR, "frigging"=> self::B_INCR, "friggin"=> self::B_INCR, "fully"=> self::B_INCR, "fucking"=> self::B_INCR,
      "greatly"=> self::B_INCR, "hella"=> self::B_INCR, "highly"=> self::B_INCR, "hugely"=> self::B_INCR, "incredibly"=> self::B_INCR,
      "intensely"=> self::B_INCR, "majorly"=> self::B_INCR, "more"=> self::B_INCR, "most"=> self::B_INCR, "particularly"=> self::B_INCR,
-     "purely"=> self::B_INCR, "quite"=> self::B_INCR, "seemingly" => self::B_INCR, "really"=> self::B_INCR, "remarkably"=> self::B_INCR,
+     "purely"=> self::B_INCR, "quite"=> self::B_INCR, "really"=> self::B_INCR, "remarkably"=> self::B_INCR,
      "so"=> self::B_INCR, "substantially"=> self::B_INCR,
      "thoroughly"=> self::B_INCR, "totally"=> self::B_INCR, "tremendous"=> self::B_INCR, "tremendously"=> self::B_INCR,
      "uber"=> self::B_INCR, "unbelievably"=> self::B_INCR, "unusually"=> self::B_INCR, "utterly"=> self::B_INCR,
@@ -60,7 +60,7 @@ class Config
                           "on the ball"=> 2, "under the weather"=> -2];
 
     // check for special case idioms using a sentiment-laden keyword known to SAGE
-    const SPECIAL_CASE_IDIOMS = ["the shit"=> 3, "the bomb"=> 3, "bad ass"=> 1.5, "bus stop"=> 0.0, "yeah right"=> -2, "cut the mustard"=> 2, "kiss of death"=> -1.5, "hand to mouth"=> -2, "beating heart"=> 3.1,"broken heart"=> -2.9,  "to die for"=> 3];
+    const SPECIAL_CASE_IDIOMS = ["the shit"=> 3, "the bomb"=> 3, "bad ass"=> 1.5, "badass"=> 1.5, "bus stop"=> 0.0, "yeah right"=> -2, "kiss of death"=> -1.5, "to die for"=> 3, "beating heart"=> 3.5];
     ##Static methods##
 
     /*
