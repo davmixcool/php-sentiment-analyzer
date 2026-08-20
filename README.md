@@ -10,33 +10,6 @@ PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool for P
 * Emoticon
 * Emoji
 
-## Relationship to VADER
-
-This package uses the **VADER sentiment lexicon verbatim** — the dictionary files
-in `src/Lexicons/` are byte-identical to
-[cjhutto/vaderSentiment](https://github.com/cjhutto/vaderSentiment), and lexicon
-and emoji lookups match the reference implementation exactly.
-
-**The rule engine is an independent port, and it is not score-equivalent with
-reference Python VADER.** Measured across a 336-case corpus, scores differ on
-**47% of cases**. The two largest causes are negation strength and the ordering
-of booster damping:
-
-| Input | This package | Python VADER |
-| --- | --- | --- |
-| `aint good` | -0.1423 | -0.3412 |
-| `very good` | 0.4877 | 0.4927 |
-| `I have never been so happy` | -0.2699 | 0.6948 |
-
-If you need results that match Python VADER exactly, this package will not give
-them to you today. If you need a self-contained, dependency-free, deterministic
-sentiment scorer for PHP, it does that well — and its behaviour is pinned by a
-355-case characterization suite, so it does not drift between releases.
-
-Run `composer conformance` to reproduce the comparison yourself. Full detail,
-including which rules diverge and why, is in
-[KNOWN-DIVERGENCES.md](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/KNOWN-DIVERGENCES.md).
-
 ## Requirements
 
 * PHP 8.1 and above
@@ -47,12 +20,12 @@ including which rules diverge and why, is in
 
 ## Contents
 
-* [Relationship to VADER](#relationship-to-vader)
 * [Install](#install)
 * [Modern API](#modern-api)
 * [Simple Usage](#simple-usage)
 * [Advanced Usage](#advanced-usage)
 * [Upgrading](#upgrading)
+* [Relationship to VADER](#relationship-to-vader)
 * [License](#license)
 * [Reference](#reference)
 
@@ -225,6 +198,50 @@ The genuine "never" behaviour is unchanged: `never so good` still scores -0.2385
 If you store sentiment scores or compare them against thresholds, re-score any
 affected text after upgrading. Full details in the
 [changelog](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/CHANGELOG.md).
+
+### Relationship to VADER
+
+This package uses the **VADER sentiment lexicon verbatim** — the dictionary files
+in `src/Lexicons/` are byte-identical to
+[cjhutto/vaderSentiment](https://github.com/cjhutto/vaderSentiment), and lexicon
+and emoji lookups match the reference implementation exactly.
+
+**The rule engine is an independent port, and it is not score-equivalent with
+reference Python VADER.** Measured across a 336-case corpus, scores differ on
+**47% of cases**. The two largest causes are negation strength and the ordering
+of booster damping:
+
+| Input | This package | Python VADER |
+| --- | --- | --- |
+| `aint good` | -0.1423 | -0.3412 |
+| `very good` | 0.4877 | 0.4927 |
+| `I have never been so happy` | -0.2699 | 0.6948 |
+
+If you need results that match Python VADER exactly, this package will not give
+them to you today. If you need a self-contained, dependency-free, deterministic
+sentiment scorer for PHP, it does that well — and its behaviour is pinned by a
+355-case characterization suite, so it does not drift between releases.
+
+Run `composer conformance` to reproduce the comparison yourself. Full detail,
+including which rules diverge and why, is in
+[KNOWN-DIVERGENCES.md](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/KNOWN-DIVERGENCES.md).
+
+### 3.0.0 resolves this
+
+The scoring engine was rewritten as a faithful port and now matches reference
+VADER exactly — verified by `composer conformance`, which fails CI on any
+divergence.
+
+```bash
+composer require davmixcool/php-sentiment-analyzer:^3.0
+```
+
+**Your scores will change** — roughly 45% of cases move, most importantly
+negation, which this line applies at about a third of its intended strength. See
+[MIGRATION.md](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/MIGRATION.md).
+
+This 2.x line remains maintained for anyone who needs score stability, so
+upgrading is a choice rather than a deadline.
 
 ### License
 

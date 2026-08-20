@@ -87,26 +87,25 @@ ordinary sentence:
 "I have never been so happy"    this package: -0.2699    reference: +0.6948
 ```
 
-### Status — planned for 3.0.0
+### Status — RESOLVED in 3.0.0, available on the 3.x line
 
-**These will be fixed.** Alignment with reference VADER is planned for the next
-major release.
+**These are fixed.** 3.0.0 rewrote the scoring engine as a faithful port of
+reference `vaderSentiment` 3.3.2 and reports **0 divergence across 350 cases**,
+enforced in CI by `composer conformance`.
 
-It has to be a major release: correcting negation and booster damping moves
-roughly half of all scores. It will not arrive in a patch or minor version. The
-release will carry a full before/after breakdown and an explicit re-score
-warning, as `1.3.0` did for a smaller change.
+```bash
+composer require davmixcool/php-sentiment-analyzer:^3.0
+```
 
-They are also deliberately **not** being fixed piecemeal. These rules interact —
-an isolated idiom fix was attempted and made overall divergence worse (see
-section 2) — so alignment is a single coordinated change verified against the
-characterization corpus, not a series of patches.
+It is a major release because the fixes move roughly 45% of scores. **This 2.x
+line keeps the behaviour documented below**, unchanged and maintained, for users
+who need score stability. Nothing here will be fixed on 2.x — the fix is the
+upgrade.
 
-Progress is measurable: `composer conformance` reports divergence per rule
-section, so this is a number going to zero rather than a judgement call.
-
-If you would rather not move, the current behaviour remains available on the
-existing release lines, which stay maintained.
+They were deliberately not fixed piecemeal: these rules interact, and an isolated
+idiom fix attempted before 3.0.0 made overall divergence worse (158 → 166). That
+is why alignment was one coordinated rewrite verified against the
+characterization corpus.
 
 ## 1. `_never_check` zeroed sentiment after "so" or "this" — FIXED in 1.3.0
 
