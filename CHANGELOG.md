@@ -4,6 +4,41 @@ All notable changes to this project are documented here.
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [3.0.1] - 2026-08-20
+
+### Scores are unchanged
+
+Documentation only. No source file was modified and every pinned score is
+byte-identical to 3.0.0. **If you re-scored for 3.0.0, you do not need to do so
+again.**
+
+### Fixed — documentation
+
+- **The README shipped inside the 3.0.0 tarball carried pre-3.0 values in its
+  Upgrading section, including a sign error.** It stated:
+
+  > The genuine "never" behaviour is unchanged: `never so good` still scores -0.2385.
+
+  In 3.0.0 that phrase scores **+0.5777** — VADER treats `never so` / `never
+  this` as an intensifier rather than a negation, so the sign flips. Anyone who
+  consulted that table while upgrading should re-check text using that
+  construction.
+
+  The Packagist and GitHub pages always rendered the corrected README from the
+  default branch; only the copy inside the release tarball was stale.
+
+- The Upgrading section now shows the 2.x → 3.0 changes rather than the 1.3.0
+  ones, with values verified against the current engine.
+
+### Changed
+
+- The "Relationship to VADER" section moved below the usage examples so
+  installation comes first. Before 3.0.0 that section was a warning — the package
+  diverged from reference VADER — and belonged ahead of installation. Now that
+  scores match exactly it reads as reassurance, which does not need to precede
+  getting started. Applied to the `1.x` and `2.x` lines as well, where those
+  READMEs additionally now point readers to 3.x as the aligned option.
+
 ## [3.0.0] - 2026-08-20
 
 ### Scores change — action required
@@ -168,6 +203,40 @@ legacy array uses `pos`/`neg`/`neu` — see `MIGRATION.md`.
 
 - The README's MIT license links pointed at `/blob/master/LICENSE`, which 404s;
   the file is `LICENCE.txt`.
+
+## [1.3.2] - 2026-08-20
+
+### Scores are unchanged
+
+Documentation and tooling only. No source file was modified and every pinned
+score is byte-identical to 1.3.1. **No need to re-score stored text.**
+
+### Changed
+
+- **Corrected the package description.** It previously read "…using VADER
+  (Valence Aware Dictionary and sentiment Reasoner)", which implied score
+  equivalence with the reference Python implementation. Measurement shows scores
+  differ on 47% of a 336-case corpus, so the claim is now scoped to what is
+  provably true: the package is *built on the VADER sentiment lexicon*, which it
+  uses verbatim.
+
+### Added
+
+- **`composer conformance`** (`tools/conformance.sh`) — a three-way comparison of
+  the 1.x line, the 2.x line, and reference Python `vaderSentiment`, reporting
+  divergence per rule section. Informational; it does not gate CI.
+- A **"Relationship to VADER"** section in the README, and a new section 0 in
+  `KNOWN-DIVERGENCES.md` documenting the measured divergence and its causes —
+  chiefly negation being ~2.5x too weak and booster damping being applied in
+  reverse order.
+
+### Fixed — documentation
+
+- `KNOWN-DIVERGENCES.md` section 2 previously claimed "15 of 21 idioms do not
+  fire", measured against the idiom tables. That framing was incorrect: reference
+  VADER only consults idioms in specific positions, and `SENTIMENT_LADEN_IDIOMS`
+  is explicitly unimplemented upstream, so most of those cases were parity rather
+  than defects. Rewritten against reference behaviour.
 
 ## [1.3.1] - 2026-08-19
 
