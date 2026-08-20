@@ -4,6 +4,73 @@ All notable changes to this project are documented here.
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [3.0.0] - 2026-08-20
+
+### Scores change — action required
+
+**This release changes sentiment scores.** 157 of 352 shared test cases moved
+(~45%). The package is now a faithful port of reference Python `vaderSentiment`
+3.3.2, verified case-by-case.
+
+**Re-score any stored values and revisit tuned thresholds.** If you need score
+stability, stay on `2.x`, which remains maintained. See `MIGRATION.md`.
+
+**No API changes.** `getSentiment()`, `updateLexicon()`, `analyze()`,
+`analyzeMany()`, `withLexicon()` and `SentimentResult` are unchanged.
+
+### Fixed — scoring engine now matches reference VADER
+
+| Input | 2.x | 3.0 |
+|---|---|---|
+| `aint good` | -0.1423 | **-0.3412** |
+| `I have never been so happy` | -0.2699 | **+0.6948** |
+| `good!!!!` | 0.0000 | **+0.6209** |
+| `he is a kind person` | 0.0000 | **+0.5267** |
+| `kind of good` | 0.1116 | **+0.4404** |
+| `very good` | 0.4877 | **+0.4927** |
+
+- **Negation** used `B_DECR (-0.293)` where VADER specifies `N_SCALAR (-0.74)`,
+  making every negation ~2.5x too weak. The package systematically
+  under-detected negative sentiment.
+- **Booster damping** was applied in reverse distance order, so the nearest
+  modifier was damped most.
+- **`never so` / `never this`** negated instead of intensifying, which could
+  invert the sign of an ordinary sentence.
+- **The tokenizer** dropped single-character tokens (shifting every index, and
+  with it every position-dependent rule) and only stripped punctuation runs
+  present in `PUNC_LIST`, so `"good!!!!"` was never recognised.
+- **Any token equal to `"kind"` or `"of"`** was skipped entirely; reference skips
+  `"kind"` only when followed by `"of"`.
+- **Idiom checks** ran unconditionally instead of only at `start_i == 2`, and the
+  booster n-gram adjustment was applied up to five times per token.
+- **`"no"` handling** was absent.
+- **`_least_check`** lacked its "preceding word not in the lexicon" gate.
+- **Config tables** diverged: `BOOSTER_DICT` was missing 15 entries and carried a
+  non-upstream one (`seemingly`), and `SPECIAL_CASE_IDIOMS` did not match 3.3.2.
+
+### Added
+
+- **`composer conformance` is now a gate.** It scores a 350-case corpus with both
+  this package and Python `vaderSentiment` 3.3.2 and **fails on any divergence**.
+  It runs in CI, so parity cannot silently regress. The reference version is
+  pinned deliberately — the tables differ between releases.
+
+### Changed
+
+- The package description again claims VADER equivalence, because it is now true.
+  2.0.1 had scoped that claim back when measurement showed 47% divergence.
+- The characterization corpus grew from 355 to 369 cases, following the corrected
+  `BOOSTER_DICT`.
+
+### Removed
+
+- Dead scaffolding left by the rewrite: `getWordInContext()`,
+  `adjustBoosterSentiment()`, `modifyValenceBasedOnContext()`,
+  `getTargetWordFromContext()`, `dampendBoosterScalerByPosition()`,
+  `getValenceFromLexicon()`, `IsInLexicon()`. All were private.
+- `SentiText::strip_punctuation()`, `_words_only()` and
+  `array_count_values_of()`, which existed only to support the old tokenizer.
+
 ## [2.0.1] - 2026-08-20
 
 ### Scores are unchanged

@@ -10,18 +10,37 @@
 # guarantees byte-identical scores with 1.3.0. The `v1!=v2` column is therefore a
 # regression alarm — any non-zero value means the two lines have drifted.
 #
-# INFORMATIONAL ONLY. Always exits 0, and is deliberately NOT wired into CI:
-# it measures a known, accepted gap, and gating builds on a number we have
-# consciously chosen not to fix yet would block every build.
+# From 3.0.0 this is a GATE, not a report: the package is a faithful port and
+# conformance is expected to be 0. Any divergence fails the run. Pass
+# --allow-divergence to report without failing (useful mid-refactor).
 #
-# Usage: ./tools/conformance.sh   (or: composer conformance)
+# Usage: ./tools/conformance.sh              compare committed branches
+#        ./tools/conformance.sh --worktree   score v2 from the working tree
+#
+# --worktree is what you want while actively changing the scoring engine:
+# without it the v2 column reflects the last commit, not your edits.
 
 set -euo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 FIXTURE="$PROJECT_DIR/tests/fixtures/baseline.json"
+# Pinned deliberately: SPECIAL_CASES differs between vaderSentiment releases
+# (3.3.2 has "beating heart" => 3.5 and no "broken heart"; the GitHub master
+# source has 3.1 and -2.9). Conformance is only meaningful against a fixed target.
+VADER_VERSION="${VADER_VERSION:-3.3.2}"
 V1_REF="${CONFORMANCE_V1_REF:-1.x}"
 V2_REF="${CONFORMANCE_V2_REF:-master}"
+USE_WORKTREE=0
+ALLOW_DIVERGENCE=0
+
+for arg in "$@"; do
+    case "$arg" in
+        --worktree) USE_WORKTREE=1 ;;
+        --allow-divergence) ALLOW_DIVERGENCE=1 ;;
+        -h|--help) sed -n '2,12p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+        *) echo "ERROR: unknown argument '$arg' (expected --worktree or --allow-divergence)"; exit 2 ;;
+    esac
+done
 
 cd "$PROJECT_DIR"
 
@@ -76,17 +95,34 @@ PHP
 score_branch() {
     local ref="$1" out="$2" stage="$WORK/src-$3"
     mkdir -p "$stage"
-    git archive "$ref" src | tar -xf - -C "$stage"
+    if [ "$ref" = "WORKTREE" ]; then
+        tar -cf - src | tar -xf - -C "$stage"
+    else
+        git archive "$ref" src | tar -xf - -C "$stage"
+    fi
     docker run --rm --user "$(id -u):$(id -g)" \
         -v "$WORK":/w -v "$stage":/stage -w /w \
         -e SRC_ROOT=/stage -e "OUT_FILE=/w/$out" \
         php:8.1-cli php /w/score.php
 }
 
-printf '\n  scoring with v1 (%s)...\n' "$V1_REF"
-score_branch "$V1_REF" "v1.json" "v1"
+HAVE_V1=1
+if git rev-parse --verify --quiet "$V1_REF" >/dev/null 2>&1; then
+    printf '\n  scoring with v1 (%s)...\n' "$V1_REF"
+    score_branch "$V1_REF" "v1.json" "v1"
+else
+    # CI checkouts often lack the maintenance branch. The v1 column is a
+    # drift alarm, not the gate — carry on without it.
+    HAVE_V1=0
+    printf '\n  skipping v1 (%s not available in this checkout)\n' "$V1_REF"
+fi
 
-printf '  scoring with v2 (%s)...\n' "$V2_REF"
+if [ "$USE_WORKTREE" -eq 1 ]; then
+    V2_REF="WORKTREE"
+    printf '  scoring with v2 (working tree)...\n'
+else
+    printf '  scoring with v2 (%s)...\n' "$V2_REF"
+fi
 score_branch "$V2_REF" "v2.json" "v2"
 
 printf '  scoring with reference Python VADER...\n'
@@ -100,11 +136,15 @@ json.dump({k: f"{a.polarity_scores(t)['compound']:.4f}" for k, t in cases.items(
           open('/w/ref.json', 'w'))
 PY
 docker run --rm --user "$(id -u):$(id -g)" -v "$WORK":/w -w /w \
-    -e HOME=/tmp -e PYTHONDONTWRITEBYTECODE=1 \
-    python:3.11-slim sh -c 'pip install -q --no-cache-dir vaderSentiment >/dev/null 2>&1 && python ref.py'
+    -e HOME=/tmp -e PYTHONDONTWRITEBYTECODE=1 -e VADER_VERSION="$VADER_VERSION" \
+    python:3.11-slim sh -c 'pip install -q --no-cache-dir "vaderSentiment==${VADER_VERSION}" >/dev/null 2>&1 && python ref.py'
 
-REF_VERSION="$(docker run --rm python:3.11-slim sh -c \
-    'pip install -q --no-cache-dir vaderSentiment >/dev/null 2>&1 && pip show vaderSentiment 2>/dev/null | awk "/^Version/{print \$2}"' || echo '?')"
+REF_VERSION="$(docker run --rm -e VADER_VERSION="$VADER_VERSION" python:3.11-slim sh -c \
+    'pip install -q --no-cache-dir "vaderSentiment==${VADER_VERSION}" >/dev/null 2>&1 && pip show vaderSentiment 2>/dev/null | awk "/^Version/{print \$2}"' || echo '?')"
+
+if [ "$HAVE_V1" -eq 0 ]; then
+    cp "$WORK/v2.json" "$WORK/v1.json"
+fi
 
 php -r '
 $v1  = json_decode(file_get_contents($argv[1]), true);
@@ -133,9 +173,12 @@ printf("  %s\n", str_repeat("-", 54));
 printf("  %-18s %8d %8d %8d %7d\n", "TOTAL", $t["v1"], $t["v2"], $t["drift"], $t["total"]);
 printf("\n  v2 matches reference on %d of %d cases (%.0f%% divergent)\n",
     $t["total"] - $t["v2"], $t["total"], 100 * $t["v2"] / $t["total"]);
+file_put_contents($argv[4], (string) $t["v2"]);
 
-if ($t["drift"] === 0) {
-    printf("  v1 and v2 agree on every case — the 1.3.0/2.0.0 parity guarantee holds.\n");
+if ($argv[5] === "0") {
+    printf("  (v1 column omitted — maintenance branch not present in this checkout)\n");
+} elseif ($t["drift"] === 0) {
+    printf("  v1 and v2 agree on every case.\n");
 } else {
     printf("  WARNING: v1 and v2 disagree on %d cases. The lines have drifted.\n", $t["drift"]);
 }
@@ -152,7 +195,15 @@ foreach ($rows as $k => $d) {
     if ($i++ >= 8) { break; }
     printf("    %-26s php=%-9s ref=%-9s delta=%.4f\n", $k, $v2[$k], $ref[$k], $d);
 }
-' "$WORK/v1.json" "$WORK/v2.json" "$WORK/ref.json"
+' "$WORK/v1.json" "$WORK/v2.json" "$WORK/ref.json" "$WORK/divergent" "$HAVE_V1"
 
 printf "\n  reference: Python vaderSentiment %s\n" "$REF_VERSION"
-printf "  informational only — this does not gate CI\n\n"
+
+DIVERGENT="$(cat "$WORK/divergent" 2>/dev/null || echo 0)"
+
+if [ "$DIVERGENT" -ne 0 ] && [ "$ALLOW_DIVERGENCE" -eq 0 ]; then
+    printf "  FAIL: %s case(s) diverge from reference. 3.x targets exact parity.\n\n" "$DIVERGENT"
+    exit 1
+fi
+
+printf "  conformance: OK\n\n"
