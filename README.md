@@ -10,27 +10,6 @@ PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool for P
 * Emoticon
 * Emoji
 
-## Relationship to VADER
-
-**This package matches reference Python
-[vaderSentiment](https://github.com/cjhutto/vaderSentiment) 3.3.2 exactly.**
-
-The lexicon files are byte-identical to upstream, and the rule engine is a
-faithful port — including reference VADER's own quirks, so that scores agree
-rather than merely being close. Conformance is verified, not asserted:
-
-```bash
-composer conformance
-```
-
-That scores a 350-case corpus with both implementations and fails if a single
-case differs. It runs in CI on every push.
-
-Before 3.0.0 this was not true — the port diverged from reference on 47% of
-cases, most importantly by applying negation at roughly a third of its intended
-strength. See [MIGRATION.md](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/MIGRATION.md)
-if you are upgrading from 1.x or 2.x, because **your scores will change**.
-
 ## Requirements
 
 * PHP 8.1 and above
@@ -41,12 +20,12 @@ if you are upgrading from 1.x or 2.x, because **your scores will change**.
 
 ## Contents
 
-* [Relationship to VADER](#relationship-to-vader)
 * [Install](#install)
 * [Modern API](#modern-api)
 * [Simple Usage](#simple-usage)
 * [Advanced Usage](#advanced-usage)
 * [Upgrading](#upgrading)
+* [Relationship to VADER](#relationship-to-vader)
 * [License](#license)
 * [Reference](#reference)
 
@@ -204,21 +183,53 @@ String: To be or not to be?  ------------- {"neg":0,"neu":1,"pos":0,"compound":0
 
 ### Upgrading
 
-**1.3.0 changes scores for some text.** `_never_check()` previously zeroed the
-sentiment of any word within two tokens of "so" or "this", so ordinary phrasing
-returned neutral. That is fixed:
+**3.0.0 changes scores.** The scoring engine is now a faithful port of reference
+Python VADER; roughly 45% of test cases moved. Previous behaviour was wrong most
+importantly in negation, which was applied at about a third of its intended
+strength.
 
-| Input | Before | After |
+| Input | 2.x | 3.0 |
 | --- | --- | --- |
-| `this is good` | 0.0000 | +0.4404 |
-| `this is bad` | 0.0000 | -0.5423 |
-| `so good` | 0.0000 | +0.4877 |
+| `aint good` | -0.1423 | **-0.3412** |
+| `I have never been so happy` | -0.2699 | **+0.6948** |
+| `good!!!!` | 0.0000 | **+0.6209** |
+| `he is a kind person` | 0.0000 | **+0.5267** |
+| `the shit` | +0.6124 | **-0.5574** |
 
-The genuine "never" behaviour is unchanged: `never so good` still scores -0.2385.
+**If you store sentiment scores or compare them against thresholds, re-score
+affected text after upgrading.** A threshold tuned against 2.x will behave
+differently — usually catching more genuinely negative text than before.
 
-If you store sentiment scores or compare them against thresholds, re-score any
-affected text after upgrading. Full details in the
-[changelog](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/CHANGELOG.md).
+If you need score stability, stay on the maintained 2.x line:
+
+```bash
+composer require davmixcool/php-sentiment-analyzer:^2.0
+```
+
+Three lines are maintained: **3.x** (matches reference VADER), **2.x** (scores
+frozen), **1.x** (PHP below 8.1). Full detail in
+[MIGRATION.md](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/MIGRATION.md).
+
+### Relationship to VADER
+
+**This package matches reference Python
+[vaderSentiment](https://github.com/cjhutto/vaderSentiment) 3.3.2 exactly.**
+
+The lexicon files are byte-identical to upstream, and the rule engine is a
+faithful port — including reference VADER's own quirks, so that scores agree
+rather than merely being close. Conformance is verified, not asserted:
+
+```bash
+composer conformance
+```
+
+That scores a 350-case corpus with both implementations and fails if a single
+case differs. It runs in CI on every push.
+
+Before 3.0.0 this was not true — the port diverged from reference on 47% of
+cases, most importantly by applying negation at roughly a third of its intended
+strength. See [MIGRATION.md](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/MIGRATION.md)
+if you are upgrading from 1.x or 2.x, because **your scores will change**.
 
 ### License
 
