@@ -18,6 +18,83 @@ This file is the worklist for the post-2.0 scoring-fix release.
 
 ---
 
+## 0. Conformance with reference VADER — 47% of cases differ
+
+The package implements VADER's rule model but is **not score-equivalent** with
+the reference Python implementation. Measured with `composer conformance`
+against Python `vaderSentiment` 3.3.2 over 336 corpus cases:
+
+| Section | v1 differs | v2 differs | v1 vs v2 | total |
+|---|---|---|---|---|
+| booster | 70 | 70 | 0 | 70 |
+| negation | 59 | 59 | 0 | 59 |
+| idiom | 7 | 7 | 0 | 21 |
+| least_never | 5 | 5 | 0 | 8 |
+| never_check | 5 | 5 | 0 | 14 |
+| kind_of | 4 | 4 | 0 | 4 |
+| caps | 2 | 2 | 0 | 8 |
+| edge | 2 | 2 | 0 | 18 |
+| idiom_sentence | 2 | 2 | 0 | 21 |
+| punctuation | 2 | 2 | 0 | 12 |
+| but_clause | 0 | 0 | 0 | 8 |
+| emoji | 0 | 0 | 0 | 25 |
+| emoji_sentence | 0 | 0 | 0 | 25 |
+| lexicon | 0 | 0 | 0 | 40 |
+| readme | 0 | 0 | 0 | 3 |
+| **TOTAL** | **158** | **158** | **0** | **336** |
+
+Two observations before the causes.
+
+**The dictionary half is exact.** All 40 lexicon lookups, 50 emoji cases, 8
+but-clause cases and the 3 README examples match reference precisely. The
+lexicon files are byte-identical to upstream.
+
+**The 1.x and 2.x lines agree on every case.** The divergence is inherited from
+the original port; the 2.0.0 modernization introduced none of it. That column is
+also a regression alarm — a non-zero value means the two release lines have
+drifted.
+
+### Cause 1 — negation is ~2.5x too weak
+
+`_never_check()` multiplies by `B_DECR (-0.293)` where reference uses
+`N_SCALAR (-0.74)`.
+
+```
+"aint good"    this package: -0.1423     reference: -0.3412
+```
+
+Because every negated phrase is scaled by roughly a third of the intended
+amount, the package **systematically under-detects negative sentiment**. This is
+the single highest-impact divergence: it affects all 59 negation cases.
+
+### Cause 2 — booster damping is inverted
+
+`getWordInContext()` returns `[i-3, i-2, i-1, i]`, but the distance damping
+(none / x0.95 / x0.9) is applied by array position. The result is that the
+*nearest* modifier is damped most and the *most distant* not at all — the
+opposite of the intent.
+
+```
+"very good"    this package: 0.4877      reference: 0.4927
+```
+
+### Cause 3 — "never so/this" flips sign
+
+Reference treats `never so` / `never this` as an intensifier (x1.25 / x1.5)
+without negating. The port negates as well, which can invert the sign of an
+ordinary sentence:
+
+```
+"I have never been so happy"    this package: -0.2699    reference: +0.6948
+```
+
+### Status
+
+**Not scheduled.** Correcting these would move roughly half of all scores, which
+is a major-version change for a package with a substantial install base. It is
+documented here, measurable via `composer conformance`, and deliberately left
+alone rather than fixed piecemeal.
+
 ## 1. `_never_check` zeroed sentiment after "so" or "this" — FIXED in 1.3.0
 
 `Analyzer::_never_check()` initialised `$neverModifier` to `0` and then applied
@@ -47,42 +124,43 @@ still score -0.2385 and -0.2108. No other pinned case moved.
 **This is the one deliberate scoring change in the 1.x line.** Everything below
 remains pinned as-is.
 
-## 2. 15 of 21 idioms do not fire
+## 2. Idioms rarely fire — mostly matching reference
 
-`_idioms_check()` scores the constituent words instead of the idiom. Nine never
-match at all; six resolve with the **opposite sign** to their own table value in
-`src/Config/Config.php:56` and `:63`.
+An earlier version of this file claimed "15 of 21 idioms do not fire" and
+measured each idiom against its value in `src/Config/Config.php`. **That framing
+was wrong**, and it is corrected here.
 
-| Idiom | Table | Pinned | Failure |
-|---|---|---|---|
-| `bad ass` | +1.5 | -0.2500 | sign inverted |
-| `yeah right` | -2.0 | 0.2960 | sign inverted |
-| `cut the mustard` | +2.0 | -0.2732 | sign inverted |
-| `kiss of death` | -1.5 | 0.0772 | sign inverted |
-| `hand to mouth` | -2.0 | 0.4939 | sign inverted |
-| `to die for` | +3.0 | -0.5994 | sign inverted |
-| `back handed` | -2.0 | 0.0000 | never matches |
-| `blow smoke` | -2.0 | 0.0000 | never matches |
-| `blowing smoke` | -2.0 | 0.0000 | never matches |
-| `break a leg` | +2.0 | 0.0000 | never matches |
-| `cooking with gas` | +2.0 | 0.0000 | never matches |
-| `in the black` | +2.0 | 0.0000 | never matches |
-| `in the red` | -2.0 | 0.0000 | never matches |
-| `on the ball` | +2.0 | 0.0000 | never matches |
-| `under the weather` | -2.0 | 0.0000 | never matches |
+The idiom tables were never the contract. Reference VADER gates
+`_special_idioms_check()` on `start_i == 2`, so an idiom is only consulted when
+the sentiment word sits at index >= 3 with a non-lexicon word three positions
+back. Short phrases therefore never trigger it — in reference VADER itself:
 
-The six that resolve with the right sign: `the shit` (+3.0 → 0.6124),
-`the bomb` (+3.0 → 0.6124), `beating heart` (+3.1 → 0.2732), `broken heart`
-(-2.9 → -0.7906), `upper hand` (+1.0 → 0.4939), and `bus stop` (0.0 → 0.0000,
-which only agrees trivially because its table value is zero).
+```
+"bad ass"              reference: -0.7906   (idiom value +1.5 not applied)
+"the shit"             reference: -0.5574   (idiom value +3 not applied)
+"it was a bad ass"     reference: +0.6124   (idiom applied)
+```
 
-Corpus sections: `idiom/*`, `idiom_sentence/*`.
+So "the idiom didn't fire" is usually correct behaviour, not a defect.
 
-**Note for v2:** this constrains custom lexicons. Multi-word keys would land in
-the term lexicon, not the idiom table, so they cannot work until the idiom
-matcher does.
+**`SENTIMENT_LADEN_IDIOMS` is unimplemented on purpose.** Upstream marks it
+*"future work, not yet implemented"*, never calls its own
+`_sentiment_laden_idioms_check()`, and leaves a debug `print()` inside it. The
+9 laden-only idioms (`under the weather`, `break a leg`, `in the red`, ...)
+scoring 0.0000 is **parity with reference**, not a bug.
 
----
+What remains is a genuine but small gap: 7 of 21 `idiom/*` cases differ from
+reference, because the port does not implement the forward-looking checks and
+does not apply the `start_i == 2` gate. It is folded into the overall 47%
+figure in section 0 rather than tracked separately.
+
+### A fix was attempted and rejected
+
+A targeted change restoring the forward-looking checks was implemented and
+**abandoned**: without also replicating the `start_i == 2` gate it made idioms
+fire far more often than reference, taking overall divergence from 158 to 166
+cases. Recorded here so it is not retried in isolation — idiom behaviour cannot
+be corrected independently of the surrounding context loop.
 
 ## 3. Dynamic property deprecations (PHP 8.2+)
 

@@ -1,6 +1,6 @@
 # PHP Sentiment Analyzer
 
-PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that is used to understand sentiments in a sentence using VADER \(Valence Aware Dictionary and sentiment Reasoner\).
+PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool for PHP, built on the VADER \(Valence Aware Dictionary and sEntiment Reasoner\) sentiment lexicon.
 
 [![CI](https://img.shields.io/github/actions/workflow/status/davmixcool/php-sentiment-analyzer/ci.yml?branch=1.x&label=CI)](https://github.com/davmixcool/php-sentiment-analyzer/actions/workflows/ci.yml) [![Latest Version](https://img.shields.io/packagist/v/davmixcool/php-sentiment-analyzer?label=latest)](https://packagist.org/packages/davmixcool/php-sentiment-analyzer) [![PHP Version](https://img.shields.io/packagist/php-v/davmixcool/php-sentiment-analyzer/1.x-dev?label=php)](https://packagist.org/packages/davmixcool/php-sentiment-analyzer) [![Total Downloads](https://img.shields.io/packagist/dt/davmixcool/php-sentiment-analyzer)](https://packagist.org/packages/davmixcool/php-sentiment-analyzer) [![License](https://img.shields.io/packagist/l/davmixcool/php-sentiment-analyzer)](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/LICENCE.txt) [![Stars](https://img.shields.io/github/stars/davmixcool/php-sentiment-analyzer)](https://github.com/davmixcool/php-sentiment-analyzer/stargazers) [![Forks](https://img.shields.io/github/forks/davmixcool/php-sentiment-analyzer)](https://github.com/davmixcool/php-sentiment-analyzer/network/members)
 
@@ -10,12 +10,40 @@ PHP Sentiment Analyzer is a lexicon and rule-based sentiment analysis tool that 
 * Emoticon
 * Emoji
 
+## Relationship to VADER
+
+This package uses the **VADER sentiment lexicon verbatim** — the dictionary files
+in `src/Lexicons/` are byte-identical to
+[cjhutto/vaderSentiment](https://github.com/cjhutto/vaderSentiment), and lexicon
+and emoji lookups match the reference implementation exactly.
+
+**The rule engine is an independent port, and it is not score-equivalent with
+reference Python VADER.** Measured across a 336-case corpus, scores differ on
+**47% of cases**. The two largest causes are negation strength and the ordering
+of booster damping:
+
+| Input | This package | Python VADER |
+| --- | --- | --- |
+| `aint good` | -0.1423 | -0.3412 |
+| `very good` | 0.4877 | 0.4927 |
+| `I have never been so happy` | -0.2699 | 0.6948 |
+
+If you need results that match Python VADER exactly, this package will not give
+them to you today. If you need a self-contained, dependency-free, deterministic
+sentiment scorer for PHP, it does that well — and its behaviour is pinned by a
+355-case characterization suite, so it does not drift between releases.
+
+Run `composer conformance` to reproduce the comparison yourself. Full detail,
+including which rules diverge and why, is in
+[KNOWN-DIVERGENCES.md](https://github.com/davmixcool/php-sentiment-analyzer/blob/master/KNOWN-DIVERGENCES.md).
+
 ## Requirements
 
 * PHP 5.5 and above
 
 ## Contents
 
+* [Relationship to VADER](#relationship-to-vader)
 * [Install](#install)
 * [Simple Usage](#simple-usage)
 * [Advanced Usage](#advanced-usage)
